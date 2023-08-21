@@ -1,0 +1,66 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org"
+></html>
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css" th:href="@{/bootstrap/css/bootstrap.css}">
+<!--	<link rel="stylesheet" href="/css/fontawesome.css" th:href="@{/css/fontawesome.css}">-->
+	<link rel="stylesheet" href="/uikit/css/uikit.css" th:href="@{/uikit/css/uikit.css}">
+	<link rel="stylesheet" href="/myClasses/login.css" th:href="@{/myClasses/login.css}">
+	<script src="/bootstrap/js/bootstrap.js"></script>
+<!--	<script src="/js/fontawesome.js"></script>-->
+	<script src="/uikit/js/uikit.js"></script>
+</head>
+<body>
+<video autoplay muted loop id="myVideo">
+	<source src="/video/video.mp4" type="video/mp4">
+</video>
+<div class="uk-card-default uk-card uk-card-body" style="width: 500px; margin: 300px auto; opacity: 0.5">
+	<center><img src="/images/okecie_logo.jpg" />&nbsp;&nbsp;<h2>Książka służby SOL</h2></center>
+	<br>
+	<form th:action="@{/login}" method="POST" class="form-signin">
+		<h3 th:class="uk-align-center">Zaloguj się</h3>
+		<br/>
+
+		<input type="text" id="user_name" name="user_name" placeholder="Użytkownik"
+			   class="uk-input"/> <br/>
+		<br/>
+		<input type="password" th:placeholder="Hasło"
+			   id="password" name="password" class="uk-input"/> <br/>
+
+		<div align="center" th:if="${param.error}">
+			<p style="font-size: 20; color: #FF1C19;">Nazwa użytkownika lub hasło są nieprawidłowe! Sprawdź je!</p>
+		</div>
+		<br/>
+		<button class="uk-button uk-button-secondary uk-width-1-1" name="Submit" value="Login" type="Submit"
+				> ZALOGUJ&nbsp;&nbsp;</button>
+	</form>
+</div>
+</body>
+<script>
+    // Get the video
+    var video = document.getElementById("myVideo");
+
+    // Get the button
+    var btn = document.getElementById("myBtn");
+
+    // Pause and play the video, and change the button text
+    function myFunction() {
+        if (video.paused) {
+            video.play();
+            btn.innerHTML = "Pause";
+        } else {
+            video.pause();
+            btn.innerHTML = "Play";
+        }
+    }
+
+</script>
+</html>

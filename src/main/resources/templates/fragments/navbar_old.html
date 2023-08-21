@@ -1,0 +1,237 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+<!--	<link rel="stylesheet" href="/css/fontawesome.min.css" th:href="@{/css/fontawersome.min.css}">-->
+<!--	<link rel="stylesheet" href="/css/fontawesome.css" th:href="@{/css/fontawersome.css}">-->
+
+<!--	<script th:src="@{/js/fontawesome.min.js}"></script>-->
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-fixed-top " style="background-color: #5bc0de">
+	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+			data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+	<button type="button" class="button">
+		<a th:href="#"> Dodaj </a>
+	</button>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="navbar navbar-nav">
+			<table>
+				<tr>
+					<td>Jesteś zalogowany jako:</td>
+				</tr>
+				<tr>
+					<td>
+						<center>
+							<b><span th:text="${#authentication.getName()}"></span></b>
+<!--							<b><span th:text="${(#authentication.getPrincipal().getRole())}"></span> </b>-->
+
+						</center>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<center>
+						</center>
+					</td>
+
+				</tr>
+
+			</table>
+		</ul>
+		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+			<li><a href="#" th:href="@{/index}" style="color: #0c0c0c"><span
+					class="glyphicon glyphicon-home" style="color: #0c0c0c"></span> Strona główna</a></li>
+		</ul>
+<!--		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">-->
+<!--			<li><a href="#" th:href="@{/inwentaryzacja/rejectionArticle}" style="color: #0c0c0c"><span-->
+<!--					class="glyphicon glyphicon-briefcase" style="color: #0c0c0c"></span> Archiwum</a></li>-->
+<!--		</ul>-->
+		<!--        <ul class="nav navbar-nav navbar-right" sec:authentication="principal.authorities">-->
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('MANAGER') or hasAuthority('ADMIN')">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree"
+				   aria-expanded="false" style="color: #0c0c0c"><span class="glyphicon glyphicon-book"
+																	  style="color: #0c0c0c"></span> Zarządzanie
+					słownikami<span class="caret"></span></a>
+
+				<ul class="dropdown-menu">
+					<li><a href="/manager/contracts" th:href="@{/manager/contracts}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-th-list"></span> Umowy / porozumienia</a></li>
+					<li><a href="/manager/branchRoom" th:href="@{/manager/branchRoom}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-map-marker"></span> Biura</a></li>
+					<li><a href="/manager/employee" th:href="@{/manager/employee}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-user"></span> Pracownicy</a></li>
+					<li><a href="/manager/product" th:href="@{/manager/product}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-tags"></span> Sprzęt</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree"
+				   aria-expanded="false" style="color: #FF0000"><span class="glyphicon glyphicon-user"
+																	  style="color: #FF0000"></span> Administracja<span
+						class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/administracja/branch" th:href="@{/administracja/branch}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-home"></span> Lokalizacje</a></li>
+					<li><a href="/administracja/productCategory" th:href="@{/administracja/productCategory}"
+						   style="color: #0c0c0c"><span class="glyphicon glyphicon-tag"></span> Kategorie sprzętu</a>
+					</li>
+					<li><a href="/administracja/trustmentType" th:href="@{/administracja/trustment}"
+						   style="color: #0c0c0c"><span class="glyphicon glyphicon-bookmark"></span> Własność</a></li>
+					<li><a href="/administracja/status" th:href="@{/administracja/status}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-bookmark"></span> Statusy produktów</a></li>
+					<li class="divider"></li>
+					<li><a href="/admin/users" th:href="@{/administracja/users}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-knight"></span> Użytkownicy</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+			<li><a href="/inventory/pdf/instrukcja.pdf" id="pdf" onclick="window.open('/inventory/pdf/instrukcja.pdf', '_blank', 'fullscren=yes'); return false" style="color: #2b542c"><span class="glyphicon glyphicon-picture"></span> Instrukcja</a>
+				<!--                    class="glyphicon glyphicon-user" style="color: red"></span> Twoje konto</a></li>-->
+		</ul>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#" th:href="@{/logout}" style="color: #0c0c0c"><span class="glyphicon glyphicon-log-out"
+																			  style="color: #0c0c0c"></span> Wyloguj</a>
+			</li>
+		</ul>
+
+	</div>
+<!--	<nav class="navbar navbar-light" style="background-color: #5bc0de">-->
+<!--		<div class="container-fluid">-->
+<!--			<a class="navbar-brand" href="#">Navbar</a>-->
+<!--			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--				<span class="navbar-toggler-icon"></span>-->
+<!--			</button>-->
+<!--			<div class="collapse navbar-collapse" id="navbarNavDropdown">-->
+<!--				<ul class="navbar-nav">-->
+<!--					<li class="nav-item">-->
+<!--						<a class="nav-link active" aria-current="page" href="#">Home</a>-->
+<!--					</li>-->
+<!--					<li class="nav-item">-->
+<!--						<a class="nav-link" href="#">Features</a>-->
+<!--					</li>-->
+<!--					<li class="nav-item">-->
+<!--						<a class="nav-link" href="#">Pricing</a>-->
+<!--					</li>-->
+<!--					<li class="nav-item dropdown">-->
+<!--						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--							Dropdown link-->
+<!--						</a>-->
+<!--						<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">-->
+<!--							<li><a class="dropdown-item" href="#">Action</a></li>-->
+<!--							<li><a class="dropdown-item" href="#">Another action</a></li>-->
+<!--							<li><a class="dropdown-item" href="#">Something else here</a></li>-->
+<!--						</ul>-->
+<!--					</li>-->
+<!--				</ul>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</nav>-->
+
+</nav>
+
+
+
+
+<!--KONIEC-->
+<!--<nav th:fragment="navbar" class="navbar navbar-light" style="background-color: #5bc0de">-->
+
+<!--	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">-->
+<!--		<span class="sr-only">Toggle navigation</span>-->
+<!--		<span class="icon-bar"></span>-->
+<!--		<span class="icon-bar"></span>-->
+<!--		<span class="icon-bar"></span>-->
+<!--	</button>-->
+<!--	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">-->
+<!--		<ul class="navbar navbar-nav">-->
+<!--			<table>-->
+<!--				<tr>-->
+<!--					<td>Jesteś zalogowany jako : </td>-->
+<!--				</tr>-->
+<!--				<tr>-->
+<!--					<td><center>-->
+<!--						<b><span th:text="${#authentication.getPrincipal().getUsername()}"></span></b>-->
+<!--						&lt;!&ndash;                        <br>&ndash;&gt;-->
+<!--						&lt;!&ndash;                        <span sec:authentication="principal.authorities"></span>&ndash;&gt;-->
+
+<!--					</center></td>-->
+
+<!--				</tr>-->
+<!--				<tr>-->
+<!--					<td><center>-->
+<!--					</center></td>-->
+
+<!--				</tr>-->
+
+<!--			</table>-->
+<!--		</ul>-->
+
+
+<!--		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">-->
+<!--			<li><a href="#" th:href="@{/inwentaryzacja/index}" style="color: #00FF00" ><span class="glyphicon glyphicon-home" style="color: #00FF00"></span> Strona główna</a> </li>-->
+<!--		</ul>-->
+<!--		&lt;!&ndash;        <ul class="nav navbar-nav navbar-right" sec:authentication="principal.authorities">&ndash;&gt;-->
+<!--		<ul class="nav navbar-nav" sec:authorize="hasAuthority('MANAGER') or hasAuthority('ADMIN')">-->
+<!--			<li class="dropdown">-->
+<!--				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree" aria-expanded="false" style="color: #0c0c0c"><span class="glyphicon glyphicon-book" style="color: #0c0c0c"></span> Zarządzanie słownikami<span class="caret"></span></a>-->
+
+<!--				<ul class="dropdown-menu">-->
+<!--					<li><a href="/manager/branchRoom" th:href="@{/manager/branchRoom}" style="color: #0c0c0c"><span class="glyphicon glyphicon-map-marker"></span> Biura</a></li>-->
+<!--					<li><a href="/manager/employee" th:href="@{/manager/employee}" style="color: #0c0c0c"><span class="glyphicon glyphicon-user"></span> Pracownicy</a></li>-->
+<!--					<li><a href="/manager/product" th:href="@{/manager/product}" style="color: #0c0c0c"><span class="glyphicon glyphicon-tags"></span> Sprzęt</a></li>-->
+<!--				</ul>-->
+<!--			</li>-->
+<!--		</ul>-->
+<!--		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">-->
+<!--			<li class="dropdown">-->
+<!--				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree" aria-expanded="false" style="color: #FF0000"><span class="glyphicon glyphicon-user" style="color: #FF0000"></span> Administracja<span class="caret"></span></a>-->
+<!--				<ul class="dropdown-menu">-->
+<!--					<li><a href="/administracja/branch" th:href="@{/administracja/branch}" style="color: #0c0c0c"><span class="glyphicon glyphicon-home"></span> Dyspozytornie</a></li>-->
+<!--					&lt;!&ndash;                    <li><a href="/administracja/branchRoom" th:href="@{/administracja/branchRoom}" style="color: #0c0c0c"><span class="glyphicon glyphicon-map-marker"></span> Biura</a></li>&ndash;&gt;-->
+<!--					&lt;!&ndash;                    <li><a href="/administracja/employee" th:href="@{/administracja/employee}" style="color: #0c0c0c"><span class="glyphicon glyphicon-user"></span> Pracownicy</a></li>&ndash;&gt;-->
+<!--					<li><a href="/administracja/productCategory" th:href="@{/administracja/productCategory}" style="color: #0c0c0c"><span class="glyphicon glyphicon-tag"></span> Kategorie sprzętu</a></li>-->
+<!--					&lt;!&ndash;                    <li><a href="/administracja/product" th:href="@{/administracja/product}" style="color: #0c0c0c"><span class="glyphicon glyphicon-tags"></span> Sprzet</a></li>&ndash;&gt;-->
+<!--					<li><a href="/administracja/trustmentType" th:href="@{/administracja/trustment}" style="color: #0c0c0c"><span class="glyphicon glyphicon-bookmark"></span> Własność</a></li>-->
+<!--					<li><a href="/administracja/status" th:href="@{/administracja/status}" style="color: #0c0c0c"><span class="glyphicon glyphicon-bookmark"></span> Statusy produktów</a></li>-->
+<!--					<li class="divider"></li>-->
+<!--					<li><a href="/administracja/users" th:href="@{/administracja/users}" style="color: #0c0c0c"><span class="glyphicon glyphicon-knight"></span> Użytkownicy</a></li>-->
+<!--				</ul>-->
+<!--			</li>-->
+<!--		</ul>-->
+<!--		<ul class="nav navbar-nav navbar-right">-->
+<!--			<li><a href="#" th:href="@{/logout}" style="color: #0c0c0c" ><span class="glyphicon glyphicon-log-out" style="color: #0c0c0c"></span> Wyloguj</a> </li>-->
+<!--		</ul>-->
+
+<!--	</div>-->
+
+<!--</nav>-->
+
+</body>
+
+</html>
+<!--<script>-->
+<!--    function openPdf(pdf){-->
+<!--        var pdf = "/pdf/instrukcja.pdf";-->
+<!--        window.open(pdf);-->
+<!--        return false;-->
+<!--    }-->
+<!--</script>-->
