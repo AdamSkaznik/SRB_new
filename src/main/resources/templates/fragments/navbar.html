@@ -1,0 +1,145 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<link rel="stylesheet" href="/css/fontawesome.min.css" th:href="@{/css/fontawersome.min.css}">
+	<link rel="stylesheet" href="/css/fontawesome.css" th:href="@{/css/fontawersome.css}">
+
+	<script th:src="@{/js/fontawesome.min.js}"></script>
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-fixed-top " style="background-color: #5bc0de">
+
+	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+			data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<ul class="navbar navbar-nav">
+			<table>
+				<tr>
+					<td>Jesteś zalogowany jako:</td>
+				</tr>
+				<tr>
+					<td>
+						<center>
+							<b><span th:text="${#authentication.getPrincipal().getUsername()}"></span></b>
+
+						</center>
+					</td>
+
+				</tr>
+				<tr>
+					<td>
+						<center>
+						</center>
+					</td>
+
+				</tr>
+
+			</table>
+		</ul>
+
+
+		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">
+			<li><a href="#" th:href="@{/index}" style="color: #0c0c0c"><span
+					class="glyphicon glyphicon-home" style="color: #0c0c0c"></span> Strona główna</a></li>
+		</ul>
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+			<li><a href="#" th:href="@{#}" style="color: #0c0c0c"><span
+					class="glyphicon glyphicon-briefcase" style="color: #0c0c0c"></span> Analizy</a></li>
+		</ul>
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+			<li><a href="#" th:href="@{#}" style="color: #0c0c0c"><span
+					class="glyphicon glyphicon-briefcase" style="color: #0c0c0c"></span> Zarządzanie - manager</a></li>
+		</ul>
+		<!--        <ul class="nav navbar-nav navbar-right" sec:authentication="principal.authorities">-->
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree"
+				   aria-expanded="false" style="color: #0c0c0c"><span class="glyphicon glyphicon-book"
+																	  style="color: #0c0c0c"></span> Zarządzanie
+					słownikami<span class="caret"></span></a>
+
+				<ul class="dropdown-menu">
+					<li><a href="/admin/place" th:href="@{/admin/place}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-th-list"></span> Słownik terminal</a></li>
+					<li><a href="/admin/zone" th:href="@{/admin/zone}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-map-marker"></span> Słownik strefa</a></li>
+					<li><a href="/admin/level" th:href="@{/admin/level}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-user"></span> Słownik poziom</a></li>
+					<li><a href="/admin/eventType" th:href="@{/admin/eventType}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-tags"></span> Słownik typy wydarzeń</a></li>
+					<li><a href="/admin/eventStatus" th:href="@{/admin/eventStatus}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-tags"></span> Słownik statusy wydarzeń</a></li>
+					<li><a href="/admin/patrolStatus" th:href="@{/admin/patrolStatus}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-tags"></span> Słownik statusy patroli</a></li>
+					<li><a href="/admin/patrol" th:href="@{/admin/patrol}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-tags"></span> Słownik patrole</a></li>
+				</ul>
+			</li>
+		</ul>
+		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree"
+				   aria-expanded="false" style="color: #FF0000"><span class="glyphicon glyphicon-user"
+																	  style="color: #FF0000"></span> Administracja<span
+						class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="/admin/patrol" th:href="@{/admin/patrol}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-home"></span> Patrole</a></li>
+					<li class="divider"></li>
+					<li><a href="/admin/logi" th:href="@{/admin/logi}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-list-alt"></span> Logi</a></li>
+<!--					<li><a href="/administracja/productCategory" th:href="@{/administracja/productCategory}"-->
+<!--						   style="color: #0c0c0c"><span class="glyphicon glyphicon-tag"></span> Kategorie sprzętu</a>-->
+<!--					</li>-->
+<!--					<li><a href="/administracja/trustmentType" th:href="@{/administracja/trustment}"-->
+<!--						   style="color: #0c0c0c"><span class="glyphicon glyphicon-bookmark"></span> Własność</a></li>-->
+<!--					<li><a href="/administracja/status" th:href="@{/administracja/status}" style="color: #0c0c0c"><span-->
+<!--							class="glyphicon glyphicon-bookmark"></span> Statusy produktów</a></li>-->
+					<li class="divider"></li>
+					<li><a href="/admin/users" th:href="@{/admin/users}" style="color: #0c0c0c"><span
+							class="glyphicon glyphicon-knight"></span> Użytkownicy</a></li>
+					<li class="divider"></li>
+
+				</ul>
+
+			</li>
+		</ul>
+
+<!--		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">-->
+<!--			<li><a href="/inventory/pdf/instrukcja.pdf" id="pdf" onclick="window.open('/inventory/pdf/instrukcja.pdf', '_blank', 'fullscren=yes'); return false" style="color: #2b542c"><span class="glyphicon glyphicon-picture"></span> Instrukcja</a>-->
+<!--				&lt;!&ndash;                    class="glyphicon glyphicon-user" style="color: red"></span> Twoje konto</a></li>&ndash;&gt;-->
+<!--		</ul>-->
+
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="#" th:href="@{/logout}" style="color: #0c0c0c; margin-right: 20px"><span class="glyphicon glyphicon-log-out"
+																			  style="color: #0c0c0c"></span> Wyloguj</a>
+			</li>
+		</ul>
+
+	</div>
+
+</nav>
+
+</body>
+
+</html>
+<script>
+    function openPdf(pdf){
+        var pdf = "/pdf/instrukcja.pdf";
+        window.open(pdf);
+        return false;
+    }
+</script></html>

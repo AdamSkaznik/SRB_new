@@ -1,0 +1,953 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml"
+	  xmlns:sec="http://www.w3.org/1999/xhtml"
+	  th:replace="~{fragments/layout::layout(~{::.container-fluid})}">
+<head>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.css" th:href="@{/bootstrap/css/bootstrap.css}">
+	<link rel="stylesheet" href="/fontawesome/css/fontawesome.css" th:href="@{/fontawesome/css/fontawesome.css}">
+	<link rel="stylesheet" href="/uikit/css/uikit.css" th:href="@{/uikit/css/uikit.css}">
+	<script src="/bootstrap/js/bootstrap.js"></script>
+	<script src="/fontawesome/js/fontawesome.js"></script>
+	<script src="/uikit/js/uikit.js"></script>
+</head>
+<body>
+<style>
+    .blue-row {
+        background-color: blue !important;
+        color: white;
+    }
+
+    .red-row {
+        background-color: red !important;
+        color: white;
+    }
+</style>
+
+<div class="container-fluid">
+<!--&lt;!&ndash;	modal add start&ndash;&gt;-->
+<!--	<div class="modal fade" id="add_events">-->
+<!--		<div class="modal-dialog">-->
+<!--			<div class="modal-content">-->
+<!--				<div class="modal-header">-->
+<!--					<h4 class="modal-title"> Nowa interwencja</h4>-->
+<!--					<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--				</div>-->
+<!--				<div class="modal-body justify-content-center" id="modalbodyadd">-->
+<!--					<form class="form" id="newEvent" >-->
+<!--						<div class="controls">-->
+<!--							<div class="panel panel-primary">-->
+<!--								<div class="panel-heading">Wprowadź dane do nowego wydarzenia</div>-->
+<!--									<div class="panel-body">-->
+<!--										<div class="col-sm">-->
+<!--											<label> Wybierz kategorię zgłoszenia</label>-->
+<!--											<select style="width: 540px" class="form-control" id="category" required></select>-->
+<!--&lt;!&ndash;										<input type="text" id="categoryId">&ndash;&gt;-->
+<!--										</div>-->
+
+<!--										<div class="col-sm">-->
+<!--											<label > Wybierz terminal</label>-->
+<!--											<select style="width: 540px"class="form-control" id="place" required></select>-->
+<!--										</div>-->
+
+<!--										<div class="col-sm">-->
+<!--											<label> Wybierz strefę</label>-->
+<!--											<select style="width: 540px"class="form-control" id="zone" required></select>-->
+
+<!--										</div>-->
+<!--										<div class="col-sm">-->
+<!--											<label> Wybierz poziom</label>-->
+<!--											<select style="width: 540px"class="form-control" id="level" required></select>-->
+<!--										</div>-->
+<!--										<div class="col-sm">-->
+<!--											<label> Kto zgłasza</label>-->
+<!--											<input type="text" class="form-control" id="tempReporting" required>-->
+<!--										</div>-->
+<!--										<div class="col-sm">-->
+<!--											<label for="tempDesc">Opis zdarzenia</label>-->
+<!--											<textarea class="form-control" id="tempDesc" rows="5" required></textarea>-->
+<!--										</div>-->
+<!--									</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</form>-->
+<!--					<input type="text" id="tempCategoryId" hidden>-->
+<!--					<input type="text" id="tempPlaceId" hidden>-->
+<!--					<input type="text" id="tempZoneId" hidden>-->
+<!--					<input type="text" id="tempLevelId" hidden>-->
+<!--				</div>-->
+<!--					<div class="modal-footer">-->
+<!--						<div class="btn-group" role="group">-->
+<!--							<button type="submit" class="btn btn-primary" id="addNew" style="border-radius: 15px"><i-->
+<!--							class="glyphicon glyphicon-ok-circle"></i> Zapisz-->
+<!--							</button>-->
+<!--								<div class="col-sm-1"></div>-->
+<!--							<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">-->
+<!--							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij-->
+<!--							</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
+<!--&lt;!&ndash;	modal add end&ndash;&gt;-->
+	<div class="col-sm">
+		<div>
+			<br>
+		</div>
+
+		<br>
+
+		<table>
+			<tr>
+				<p><a href="#" class="btn btn-success" id="newEvents"><span class="glyphicon glyphicon-plus"></span> Nowa interwencja</a></p>
+				<center><h4 style="color: red">Wykaz interwencji na zmianie</h4></center>
+				<br>
+			</tr>
+			<tr>
+				<table id="events" class="table table-bordered table-striped" style="width: 100%">
+					<thead>
+					<tr>
+						<th>Lp.</th>
+						<th> Status</th>
+						<th>Systemowa l.dz.</th>
+						<th>Kategoria zgłoszenia</th>
+						<th>Kto zgłasza</th>
+						<th>Terminal</th>
+						<th>Poziom</th>
+						<th>Strefa</th>
+						<th>Skierowany patrol</th>
+						<th>Obsługa</th>
+						<th>Akcje</th>
+					</tr>
+					</thead>
+				</table>
+			</tr>
+			<input type="text" id="id_event">
+<!--			<tr>-->
+<!--				<p><a href="/officer/add" class="btn btn-outline-primary"><span class="fa fa-plus" aria-hidden="true"></span>  Nowy patrol</a></p>-->
+<!--				<center><h4 style="color: red">Wykaz patroli na zmianie</h4></center>-->
+<!--				<br>-->
+<!--			</tr>-->
+<!--			<tr>-->
+<!--				<table id="patrol" class="table table-bordered table-striped" style="width: 100%">-->
+<!--					<thead>-->
+<!--					<tr>-->
+<!--						<th>Lp.</th>-->
+<!--						<th>Nazwa patrolu</th>-->
+<!--						&lt;!&ndash;				<th>Kto zgłasza</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Terminal</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Poziom/th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Strefa</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Skierowany patrol</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Ilość</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Kategoria produktu</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>kategoria id</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Rodzaj własności</th>&ndash;&gt;-->
+<!--						&lt;!&ndash;				<th>Przekazanie</th>&ndash;&gt;-->
+<!--						<th>Akcje</th>-->
+<!--					</tr>-->
+<!--					</thead>-->
+<!--				</table>-->
+<!--			</tr>-->
+		</table>
+	</div>
+	<!--	modal add start-->
+	<div class="modal fade" id="add_events">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"> Nowa interwencja</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center" id="modalbodyadd">
+					<form class="form" id="newEvent" >
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading">Wprowadź dane do nowego wydarzenia</div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label> Wybierz kategorię zgłoszenia</label>
+										<select style="width: 540px" class="form-control" id="category" required></select>
+										<!--										<input type="text" id="categoryId">-->
+									</div>
+
+									<div class="col-sm">
+										<label > Wybierz terminal</label>
+										<select style="width: 540px"class="form-control" id="place" required></select>
+									</div>
+
+									<div class="col-sm">
+										<label> Wybierz strefę</label>
+										<select style="width: 540px"class="form-control" id="zone" required></select>
+
+									</div>
+									<div class="col-sm">
+										<label> Wybierz poziom</label>
+										<select style="width: 540px"class="form-control" id="level" required></select>
+									</div>
+									<div class="col-sm">
+										<label> Kto zgłasza</label>
+										<input type="text" class="form-control" id="tempReporting" required>
+									</div>
+									<div class="col-sm">
+										<label for="tempDesc">Opis zdarzenia</label>
+										<textarea class="form-control" id="tempDesc" rows="5" required></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<input type="text" id="tempCategoryId" hidden>
+					<input type="text" id="tempPlaceId" hidden>
+					<input type="text" id="tempZoneId" hidden>
+					<input type="text" id="tempLevelId" hidden>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNew" style="border-radius: 15px"><i
+								class="glyphicon glyphicon-ok-circle"></i> Zapisz
+						</button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
+							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	modal add end-->
+
+	<!--	modal add patrol start-->
+	<div class="modal fade" id="add_patrol">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"> Kierowanie patrolu do obsługi</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center" id="modalbodyaddPatrol">
+					<form class="form" id="patrol1">
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading">Skieruj patrol do obłsugi </div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label> Wybierz patrol </label>
+										<select class="form-control" style="width: 540px" id="patrol2" required></select>
+										<input type="text" id="tempPatrolId" hidden>
+										<input type="text" id="tempEventId" hidden>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNewPatrol" style="border-radius: 15px"><i
+								class="glyphicon glyphicon-ok-circle"></i> Zapisz
+						</button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
+							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	modal add patrol end-->
+
+	<!--	modal activities start-->
+	<div class="modal fade" id="activities">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"> Zaangażowanie innych służb</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center" id="modalbodyaactivities">
+					<form class="form" id="test">
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading">Skieruj patrol do obłsugi </div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label> Zaangażowanie służb państowych</label>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Policja">
+											<label class="form-check-label" for="inlineCheckbox1">Policja</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Straż Graniczna">
+											<label class="form-check-label" for="inlineCheckbox2">Straż Graniczna</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Służba Celno-Skarbowa">
+											<label class="form-check-label" for="inlineCheckbox3">Służba Celno-Skarbowa</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Inne">
+											<label class="form-check-label" for="inlineCheckbox3">Inne</label>
+										</div>
+									</div>
+<!--								</div>-->
+									<br>
+									<div>
+										<label>Zaangażowanie służb medycznych</label>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox11" value="Wewnętrznych">
+											<label class="form-check-label" for="inlineCheckbox1">Wewnętrznych</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox12" value="Zewnętrznych">
+											<label class="form-check-label" for="inlineCheckbox2">Zewnętrznych</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addActivities" style="border-radius: 15px"><i
+								class="glyphicon glyphicon-ok-circle"></i> Zapisz
+						</button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
+							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	modal activities end-->
+
+	<div class="modal fade" id="add_instructions">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"> Wydanie dyspozycji</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center">
+					<form class="form" id="dyspozycje">
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading">Wydaj dyspozycję do interwencji </div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<textarea class="form-control" rows="5" id="instructionsDesc"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNewInstructions" style="border-radius: 15px"><i
+								class="glyphicon glyphicon-ok-circle"></i> Zapisz
+						</button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
+							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	modal add patrol end-->
+
+	<!--	modal add start-->
+	<div class="modal fade" id="close_events">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title"> Zakończenie interwencji</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center" id="modalbodyclose">
+					<form class="form" id="closeEvent" >
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading">Wprowadź dane, żeby zakończyć interwencję</div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label> Użyte ŚPB</label>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Policja">
+											<label class="form-check-label" for="inlineCheckbox1">Siła fizyczna</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Straż Graniczna">
+											<label class="form-check-label" for="inlineCheckbox2">Pałka służbowa</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Służba Celno-Skarbowa">
+											<label class="form-check-label" for="inlineCheckbox3">RMG</label>
+										</div>
+										<div class="form-check form-check-inline">
+											<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Inne">
+											<label class="form-check-label" for="inlineCheckbox3">Paralizator elektryczny</label>
+										</div>
+<!--										<select style="width: 540px" class="form-control" id="category" required></select>-->
+										<!--										<input type="text" id="categoryId">-->
+									</div>
+									<div class="col-sm-12" id="spbrequired">
+										<div class="col-sm">
+											<label for="close1"> Czynności przed użyciem ŚPB</label>
+											<textarea class="form-control" id="close1" rows="5"></textarea>
+											<!--										<select style="width: 540px"class="form-control" id="zone" required></select>-->
+										</div>
+										<div class="col-sm">
+											<label for="close2"> Czynności po użyciu ŚPB</label>
+											<textarea class="form-control" id="close2" rows="5"></textarea>
+											<!--										<select style="width: 540px"class="form-control" id="level" required></select>-->
+										</div>
+									</div>
+									<div class="col-sm">
+										<label > Podjęte czynności</label>
+<!--										<select style="width: 540px"class="form-control" id="place" required></select>-->
+									</div>
+<!--									<div class="col-sm">-->
+<!--										<label for="close1"> Czynności przed użyciem ŚPB</label>-->
+<!--										<textarea class="form-control" id="close1" rows="5"></textarea>-->
+<!--&lt;!&ndash;										<select style="width: 540px"class="form-control" id="zone" required></select>&ndash;&gt;-->
+<!--									</div>-->
+<!--									<div class="col-sm">-->
+<!--										<label for="close2"> Czynności po użyciu ŚPB</label>-->
+<!--										<textarea class="form-control" id="close2" rows="5"></textarea>-->
+<!--&lt;!&ndash;										<select style="width: 540px"class="form-control" id="level" required></select>&ndash;&gt;-->
+<!--									</div>-->
+									<div class="col-sm">
+										<label for="close3"> Ogólny stan zdrowia</label>
+										<textarea class="form-control" id="close3" rows="5"></textarea>
+<!--										<input type="text" class="form-control" id="tempReporting" required>-->
+									</div>
+									<div class="col-sm">
+									<label for="close4">Czynności podjęte wspólnie z innymi służbami</label>
+									<textarea class="form-control" id="close4" rows="5" required></textarea>
+								</div>
+									<div class="col-sm">
+										<label for="close5"> Inne istotne informacje</label>
+										<textarea class="form-control" id="close5" rows="5" required></textarea>
+									</div>
+									<div class="col-sm">
+										<label for="close6"> pkt. 12</label>
+										<textarea class="form-control" id="close6" rows="5" required></textarea>
+									</div>
+									<div class="col-sm">
+										<label for="close7"> pkt.13</label>
+										<textarea class="form-control" id="close7" rows="5" required></textarea>
+									</div>
+									<div class="col-sm">
+										<label for="close8"> Dane osoby w stosunku do której podejmowano czynności</label>
+										<textarea class="form-control" id="close8" rows="5" required></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<input type="text" id="tempCategoryId" hidden>
+					<input type="text" id="tempPlaceId" hidden>
+					<input type="text" id="tempZoneId" hidden>
+					<input type="text" id="tempLevelId" hidden>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNew" style="border-radius: 15px"><i
+								class="glyphicon glyphicon-ok-circle"></i> Zapisz
+						</button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
+							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	modal add end-->
+
+
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $("#category").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/eventType/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.eventTypeName,
+                                id: item.eventTypeId,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#category").on('change', function () {
+        $("#tempCategoryId").val($(this).val());
+    });
+    $(function () {
+        $("#place").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/place/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.placeName,
+                                id: item.placeId,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#place").on('change', function () {
+        $("#tempPlaceId").val($(this).val());
+    });
+
+    $(function () {
+        $("#zone").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/zone/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.zoneName,
+                                id: item.zoneId,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#zone").on('change', function () {
+        $("#tempZoneId").val($(this).val());
+    });
+
+    $(function () {
+        $("#level").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/level/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.levelName,
+                                id: item.levelId,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#level").on('change', function () {
+        $("#tempLevelId").val($(this).val());
+    });
+
+    $(function () {
+        $("#patrol2").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/patrol/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.patrolName,
+                                id: item.patrolId,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#patrol2").on('change', function () {
+        $("#tempPatrolId").val($(this).val());
+    });
+
+
+
+    $(document).ready(function () {
+        var table1 = $('#events').DataTable({
+            // "sDom": "<'row'<'col text-center'>>" + "<'row'<'col-sm-6'>>" + "<'row'<'col-sm-8'><'col-sm-4'tf>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                {
+                    extend: 'excel',
+                    text: 'Export do excela',
+                    className: 'btn-succes'
+                },
+                {
+                    extend: "pdf",
+                    footer: true,
+                    orientantion: 'landscape',
+                    text: 'Export do PDF',
+                    className: 'btn-primary',
+                }
+            ],
+            "bAutoWidth": true,
+            "sAjaxSource": "/api/events/v1",
+            "sAjaxDataProp": "",
+            "aoColumns": [
+                {
+                    "mData": null,
+                    sWidth: '20px',
+                    "render": function (data, type, full, meta) {
+                        return meta.index + 1;
+                    }
+                },
+                {
+                    "mData": "eventStatus.eventStatusId",
+                },
+                {
+                    "mData": "eventSystemNr",
+                },
+                {
+                    "mData": "eventType.eventTypeName",
+                },
+                {
+                    "mData": "reporting",
+                },
+                {
+                    "mData": "place.placeName",
+                },
+                {
+                    "mData": "level.levelName",
+                },
+                {
+                    "mData": "zone.zoneName",
+                },
+                {
+                    "mData": "patrol.patrolName",
+
+                },
+                {
+                    "mData": null,
+                    "render": function () {
+                        return '<a href="#"><span style="color: green" class="glyphicon glyphicon-share" title="Skieruj patrol" id="go"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: red" class="glyphicon glyphicon-screenshot" title="Podjęcie interwencji" id="work"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: red" class="glyphicon glyphicon-exclamation-sign" title="Wydaj dyspozycję" id="write"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: skyblue" class="glyphicon glyphicon-export" title="Przekaż innym służbom" id="share"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-off" title="Zamknij" id="close"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-list-alt" title="Wygeneruj notatkę" id="print"></span></a>';
+                    }
+                },
+                {
+                    "mData": null,
+                    "render": function () {
+                        return '<a href="#"><span style="color: red" class="glyphicon glyphicon-pencil" title="Edycja" id="edit"></span></a>&nbsp;<a href="#"><span style="color: orange" class="glyphicon glyphicon-info-sign" title="Szczegóły" id="details"></span></a>&nbsp;<a href="#"><span style="color: skyblue" class="glyphicon glyphicon-hourglass" title="Historia" id="history"></span></a>';
+                    }
+                }
+            ],
+
+            "columnDefs": [
+
+                // {
+                //     "targets": [1],
+                //     "createdCell": function (td, cellData, rowData, row, col) {
+                //         if (cellData == '2') {
+                //             $('td', row).css('background-color', 'blue');
+                //             // $(td).css('color', 'red');
+                //             // $(row).css('color', 'Green');
+                //             // alert("2222222222222");
+                //             // $(row).css('background', 'Green');
+				// 			// $(row).css('color', 'blue')
+                //         }
+                //     },
+				// 	 // "createdRow": function (row, data, dataIndex){
+                //      //    if (data == 'w drodze'){
+                //      //         $(row).css('background', 'Green');
+				// 		//  }
+				// 	 // }
+                // }
+            ],
+            // "rowCallback": function( row, data, index ) {
+            //     if ( data[1] == "1" ) {$(row).css('background-color','green');}
+            //     else if ( data[1] == "2" ) {
+            //         // $(row).css('background-color','orange');
+            //     console.log("Yeaaaaa");}
+            //     else if ( data[1] == "3" ) {$(row).addClass('red');}
+            // },
+            "language": {
+                "processing": "Przetwarzanie...",
+                "search": "Szukaj:",
+                "lengthMenu": "Pokaż _MENU_ pozycji",
+                "info": "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix": "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords": "Nie znaleziono pasujących pozycji",
+                "emptyTable": "Nie znaleziono rekordów",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "previous": "Poprzednia",
+                    "next": "Następna",
+                    "last": "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            }
+        });
+
+
+
+        $('#events tbody').on('click', '#go', function (){
+             let data = table1.row($(this).parents('tr')).data();
+            // alert("ID wydarzenia : " + data["id"]);
+            let eventsId = data["id"];
+            $('#tempEventId').val(eventsId);
+             $('#add_patrol').modal('show');
+        })
+		// $('#events tbody').on('click', '#work', function (){
+        //     let data = table1.row($(this).parents('tr')).data();
+        //     // try {
+        //         window.location = '/api/saveIntervention/' +data["id"];
+        //         return "index";
+        //     // } catch (e) {
+		// 	// 	e.print();
+        //     // }
+        //     // return ""
+        //     // }
+		// })
+
+		$('#events tbody').on('click', '#share', function (){
+            let data = table1.row($(this).parents('tr')).data();
+            let eventsId = data["id"];
+            $('#activities').modal('show');
+		})
+
+		$('#events tbody').on('click', '#write', function (){
+            let data = table1.row($(this).parents('tr')).data();
+            $('#id_event').val(data["id"]);
+            $('#add_instructions').modal('show');
+		})
+		$('#events tbody').on('click', '#work', function (){
+            let data = table1.row($(this).parents('tr')).data();
+            $('#id_event').val(data["id"]);
+		})
+
+		$('#events tbody').on('click', '#edit', function (){
+            let data = table1.row($(this).parents('tr')).data();
+		})
+        $('#events tbody').on('click', '#details', function (){
+            let data = table1.row($(this).parents('tr')).data();
+            console.log("ID : " + data.id);
+            window.location = '/details/'+data["id"];
+        })
+
+
+        table1.on('order.dt search.dt', function () {
+            table1.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+    });
+    $('#newEvents').on('click', function (){
+        $('#add_events').modal('show');
+	});
+	$(document).delegate('#addNew', 'click', function (){
+        let tempReporting = $('#tempReporting').val();
+        let tempCategoryId = $('#tempCategoryId').val();
+        let tempDesc = $('#tempDesc').val();
+        let tempZoneId = $('#tempZoneId').val();
+        let tempPlaceId = $('#tempPlaceId').val();
+        let tempLevelId = $('#tempLevelId').val();
+
+        console.log("Przekazywane dane : " + tempReporting + "; "+ tempCategoryId + "; " + tempDesc + "; " + tempZoneId + "; " + tempPlaceId + "; " + tempLevelId)
+		$.ajax({
+		type: "post",
+            contentType: "application/json; charset=UTF-8",
+            url: "/api/saveEvent",
+			data: JSON.stringify({'tempReporting': tempReporting, 'tempDesc': tempDesc, 'tempZoneId': tempZoneId, 'tempCategoryId': tempCategoryId, 'tempPlaceId': tempPlaceId, 'tempLevelId': tempLevelId}),
+			cache: false,
+			success: function (){
+                toastr.success("Dodano nowe wydarzanie");
+                window.setTimeout(function(){
+					$("#add_events").modal("hide");
+					location.reload()},1000)
+			},
+			error: function () {
+                toastr.error("Wystąpił błąd podczas zapisu.");
+                console.log("Błąd : ");
+			}
+		});
+	});
+    $(document).delegate('#addNewPatrol', 'click', function (){
+        let tempEventId = $('#tempEventId').val();
+        let tempPatrolId = $('#tempPatrolId').val();
+
+        console.log("Przekazywane dane : " + tempEventId + "; "+ tempPatrolId)
+        $.ajax({
+            type: "post",
+            contentType: "application/json; charset=UTF-8",
+            url: "/api/saveEventAddPatrol",
+            data: JSON.stringify({'tempEventId': tempEventId, 'tempPatrolId': tempPatrolId}),
+            cache: false,
+            success: function (){
+                toastr.success("Poprawnie przypisano patrol do obsługi");
+                window.setTimeout(function(){
+                    $("#add_events").modal("hide");
+                    location.reload()},1000)
+            },
+            error: function () {
+                toastr.error("Wystąpił błąd podczas zapisu.");
+                console.log("Błąd : ");
+            }
+        });
+    });
+$(document).delegate('#work', 'click', function(){
+    let id = $('#id_event').val();
+    console.log("Id : " + id);
+    $.ajax({
+		type: "post",
+		contentType: "application/json; charset=UTF-8",
+		url:"/api/saveWork/"+id,
+        data: JSON.stringify({'id': id}),
+		cache: false,
+		success: function() {
+            toastr.success("Poprawnie rozpoczęto interwencję");
+            window.setTimeout(location.reload(), 300)
+		},
+		error: function (){
+            toastr.error("Wystąpił błąd podczas zapisu.");
+            console.log("Błąd :");
+		}
+	});
+});
+
+$(document).delegate('#addNewInstructions', 'click', function (){
+    let tempEventId = $('#id_event').val();
+    let tempDesc = $('#instructionsDesc').val();
+    $.ajax({
+		type: "post",
+        contentType: "application/json; charset=UTF-8",
+		url: "/api/saveInstructions",
+		data: JSON.stringify({'tempEventId': tempEventId, 'tempDesc': tempDesc}),
+		cache: false,
+		success: function (){
+            toastr.success("Poprawnie dodano dyspozycję");
+            window.setTimeout(function(){
+                $("#add_instructions").modal("hide");
+                location.reload()},1000)
+		},
+		error: function (){
+            toastr.error("Wystąpił błąd podczas zapisu.");
+            console.log("Błąd :");
+		}
+	});
+});
+
+
+
+
+
+
+</script>

@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container-fluid})}">
+<head>
+<!--	<meta charset="UTF-8">-->
+<!--	<title>Title</title>-->
+</head>
+<body>
+<div class="container">
+	<br><br><br>
+	<form style="margin: auto" th:object="${place}" th:action="@{/admin/savePlace}" method="post">
+		<div class="col-sm">
+			<label>Nazwa statusu</label>
+			<input th:field="*{placeName}" type="text" class="uk-input">
+		</div>
+<!--		<div class="col-sm">-->
+<!--			<label>Opis statusu</label>-->
+<!--			<input th:field="*{statusDesc}" type="text" class="uk-input">-->
+<!--		</div>-->
+		<br>
+		<div class="uk-margin uk-align-right">
+			<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i> </button>
+		</div>
+	</form>
+	<div class="uk-margin uk-align-right">
+		<!--            <button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i> </button>-->
+		<a href="/admin/place" class="uk-button-primary"><button class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Anuluj</button></a>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+
+<div class="container">
+	<form th:action="@{/admin/users/save}" th:object="${user}" method="post">
+		<div class="controls">
+			<div class="panel panel-primary">
+			<div class="panel-heading">Dodaj nowego użytkownika</div>
+				<div class="panel-body">
+				<div class="col-sm">
+					<label>Login</label>
+					<input type="text" class="form-control" th:field="*{userName}">
+				</div>
+					<div class="col-sm">
+						<label>Adres e-mail</label>
+						<input type="text" class="form-control" th:field="*{email}">
+					</div>
+					<div class="col-sm">
+						<label>Hasło</label>
+						<input type="text" class="form-control" th:field="*{password}">
+					</div>
+					<div class="col-sm">
+						<label>Imię</label>
+						<input type="text" class="form-control" th:field="*{fName}">
+					</div>
+					<div class="col-sm">
+						<label>Nazwisko</label>
+						<input type="text" class="form-control" th:field="*{lName}">
+					</div>
+					<p>
+						<label>Rola w aplikacji:
+							<input type="checkbox" name="roles"
+								   th:each="role : ${allRoles}"
+								   th:text="${role.role}"
+								   th:value="${role.id}"
+								   th:field="*{roles}"
+							/>
+							<br>
+						</label>
+					</p>
+				</div>
+			</div>
+			<div class="uk-margin uk-align-right">
+				<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i>
+				</button>
+			</div>
+		</div>
+
+	</form>
+</div>
+</body>
+</html>

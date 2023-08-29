@@ -1,0 +1,74 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sd="http://www.w3.org/1999/xhtml"
+	  xmlns:sec="http://www.w3.org/1999/xhtml"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/bootstrap4-toggle.min.css" th:href="@{/css/bootstrap4-toggle.min.css}">
+	<link rel="stylesheet" href="/css/bootstrap4-toggle.css" th:href="@{/css/bootstrap4-toggle.css}">
+	<script th:src="@{/js/bootstrap4-toggle.min.js}"></script>
+	<script th:src="@{/js/bootstrap4-toggle.js}"></script>
+	<script th:src="@{/js/jquery-3.6.0.js}"></script>
+	<!--	<title>Title</title>-->
+</head>
+<body>
+<div class="container">
+	<br><br>
+	<form style="margin: auto" th:object="${eventStatus}" th:action="@{/admin/saveEventStatus}" method="post">
+		<br><br>
+		<div class="col-sm">
+			<label>Nazwa typu</label>
+			<input th:field="*{eventStatusName}" type="text" class="form-control">
+		</div>
+		<div class="col-sm">
+			<label> Dodatkowy opis</label>
+			<textarea th:field="*{eventStatusDesc}" class="form-control" rows="5"></textarea>
+		</div>
+		<div class="col-sm">
+			<label>Ostateczne zakończenie?</label>
+			<input type="checkbox" data-toggle="toggle" data-onstyle="success"
+				   data-offstyle="default" data-on="TAK" data-off="NIE" id="isEnd">
+			<div class="handle"></div>
+			<input type="text" name="allDay" id="end" th:field ="*{eventStatusSequence}" value="false">
+		</div>
+		<!--		<div class="col-sm">-->
+		<!--			<label>Opis statusu</label>-->
+		<!--			<input th:field="*{statusDesc}" type="text" class="uk-input">-->
+		<!--		</div>-->
+		<br>
+		<div class="uk-margin uk-align-right">
+			<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i> </button>
+		</div>
+	</form>
+	<div class="uk-margin uk-align-right">
+		<!--            <button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i> </button>-->
+		<a href="/admin/place" class="uk-button-primary"><button class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Anuluj</button></a>
+	</div>
+</div>
+</body>
+</html>
+<script>
+    $(function() {
+        $('#isEnd').bootstrapToggle({
+            on: 'TAK',
+            off: 'NIE',
+            size: 'small',
+            onstyle: 'success',
+            offstyle: 'default'
+        });
+    });
+
+    $(function() {
+        $('#isEnd').change(function () {
+            var sprawdz = $('#isEnd').prop('checked');
+            console.log(sprawdz);
+            $('#end').val(sprawdz);
+        })
+    });
+</script>

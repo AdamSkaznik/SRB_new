@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+	<br><br>
+	<div>
+		<br>
+	</div>
+	<div class="row">
+		<center><h2> Szczegóły interwencji</h2></center>
+	</div>
+	<div class="row">
+		<table th:object="${event}" class="table table-bordered table-striped" style="width: 100%">
+<!--			<thead>-->
+			<tr>
+				<th> L.DZ.</th>
+			</tr>
+			<tr>
+				<th>ZGŁASZAJĄCY INTERWENCJĘ</th>
+			</tr>
+			<tr>
+				<th>DANE DOTYCZĄCE INTERWENCJI (kategoria zgłoszenia)</th>
+			</tr>
+			<tr>
+				<th>
+					LOKALIZACJA
+				</th>
+
+			</tr>
+			<tr>
+				<th> CZAS TRWANIA INTERWENCJI</th>
+			</tr>
+			<tr>
+				<th> ZAANGAŻOWANIE SŁUŻB PAŃSTOWYCH</th>
+			</tr>
+<!--			</thead>-->
+		</table>
+
+	</div>
+
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+</script>

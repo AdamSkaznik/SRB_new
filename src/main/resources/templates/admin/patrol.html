@@ -1,0 +1,198 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+<!--	<meta charset="UTF-8">-->
+<!--	<title>Title</title>-->
+</head>
+<div class="container">
+<br><br><br>
+	<p><a href="#" class="btn btn-danger" id="add_patrol"><span class="glyphicon glyphicon-plus"
+																			 aria-hidden="true"></span> Dodaj patrol</a>
+	</p>
+	<div class="row">
+		<center><h2>Wykaz patroli</h2></center>
+	</div>
+	<br>
+	<div class="row">
+		<table id="patrol" class="table table-bordered table-striped" style="width: 100%">
+			<thead>
+			<tr>
+				<th>Lp.</th>
+				<th>Nazwa patrolu</th>
+				<th>Dodatkowy opis patrolu</th>
+				<th>Akcje</th>
+			</tr>
+			</thead>
+		</table>
+
+	</div>
+	<!--	start modal add-->
+	<div class="modal fade" id="patrolAdd">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Dodanie nowego patrolu <i class="glyphicon glyphicon-exclamation-sign"
+																	  style="color: blue"></i></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center">
+					<form class="form"  method="post">
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading"></div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label>Nazwa patrolu</label>
+										<input type="text" class="form-control" id="patrolName">
+									</div>
+									<div class="col-sm">
+										<label>Dodatkowy opis patrolu</label>
+										<!--									<input type="text" class="form-control" id="levelName">-->
+										<textarea class="form-control rounded-0" id="patrolDesc" rows="5"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNewPatrol" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px"><i class="glyphicon glyphicon-remove"></i> Zamknij</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	end modal add-->
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var table = $('#patrol').DataTable({
+            "sAjaxSource" : "/api/patrol/v1",
+            "sAjaxDataProp": "",
+            "aoColumns": [
+                {"mData": null,
+                    "render" : function (data, type, full, meta) {
+                        return meta.index +1;
+                    }},
+                { "mData": "patrolName"},
+                { "mData": "patrolDesc" },
+                {"mData": null,
+                    "orderable": false,
+                    sWidth: '40px',
+                    "render": function () {
+                        return '<a href="#"><i class="glyphicon glyphicon-pencil" id="edytuj" title="Edycja" style="color: #00FF00"></i></a>&nbsp;&nbsp;&nbsp;<a href="#"><i class="glyphicon glyphicon-remove" id="usun" title="Usuń" style="color: #ac2925"></i></a>';
+                    }}
+            ],
+            "columnDefs": [
+                // {
+                //     "targets": [4],
+                //     render: function (data, type, row, td) {
+                //         if (data == 'W') {
+                //             return 'WPŁYW';
+                //         } else if (data == 'R') {
+                //             return 'ROZCHÓD';
+                //         }
+                //     },
+                //     "createdCell": function (td, cellData, rowData, row, col) {
+                //         if (cellData === "W") {
+                //             $(td).css('background-color', 'green');
+                //         } else if(cellData === "R"){
+                //             $(td).css('background-color', 'red');
+                //         }
+                //     }
+                // }
+
+            ],
+            "language": {
+                "processing": "Przetwarzanie...",
+                "search": "Szukaj:",
+                "lengthMenu": "Pokaż _MENU_ pozycji",
+                "info": "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix": "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords": "Nie znaleziono pasujących pozycji",
+                "emptyTable": "Nie znaleziono rekordów",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "previous": "Poprzednia",
+                    "next": "Następna",
+                    "last": "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            }
+        })
+
+
+        // $('#patrol tbody').on('click', '#edytuj', function () {
+        //     var data = table.row($(this).parents('tr')).data();
+        //     window.location = '/manager/editContract/'+data["contractId"];
+        // })
+		//
+		//
+        // $('#patrol tbody').on('click', '#usun', function () {
+        //     var data = table.row($(this).parents('tr')).data();
+        //     if (confirm("Potwierdź usunięcie")){
+        //         window.location = '/inventory/manager/deleteContract/'+data["contractId"];
+        //     } else {
+        //         window.location = '/inventory/manager/contract';
+        //     }
+        // })
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+        $('#add_patrol').on('click', function (){
+            $('#patrolAdd').modal('show');
+        });
+        $(document).delegate('#addNewPatrol', 'click', function (){
+            let patrol = {
+                patrolName : $('#patrolName').val(),
+                patrolDesc : $('#patrolDesc').val()
+            };
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/admin/savePatrol",
+                data: JSON.stringify(patrol),
+                dataType: "json",
+                success: function (savedPatrol) {
+                    // alert("Dodano poziom: " + savedLevel.levelName + " " + savedLevel.levelDesc);
+                    toastr.success("Dodano patrol: " + savedPatrol.patrolName + " " + savedPatrol.patrolDesc);
+                    window.setTimeout(function () {
+                        $("#patrolAdd").modal("hide");
+                        location.reload()
+                    }, 1000)
+                },
+                error: function () {
+                    // alert("Wystąpił błąd podczas zapisu.");
+                    toastr.error("Wystąpił błąd podczas zapisu.");
+                }
+
+            })
+
+        });
+
+
+
+    })
+
+</script>
