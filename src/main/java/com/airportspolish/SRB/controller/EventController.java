@@ -44,6 +44,8 @@ public class EventController {
     PatrolServiceImpl patrolServiceImpl;
     @Autowired
     InstructionsServiceImpl instructionsServiceImpl;
+    @Autowired
+    CloseTypeServiceImpl closeTypeServiceImpl;
 
 //    @PostMapping("/api/saveEvent")
 //    public String saveEvent(@RequestBody Event event, Principal principal) {

@@ -112,7 +112,9 @@ public class Event {
 //    @JoinTable(name = "eventsPatrol", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "patrol_id"))
 //    private Set<Patrol> patrols = new HashSet<>();
 
-
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "closeTypeId", nullable = true)
+    private CloseType closeType;
 
 
 
