@@ -4,26 +4,23 @@
  */
 
 package com.airportspolish.SRB.model;
+// model dla śpb
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_closeType")
-public class CloseType {
+@Table(name = "tab_spb")
+public class Spb {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String closeTypeName;
-    private String closeTypeDesc;
-    private boolean active;
-
+    private Long spbId;
+    private String spbName;
+    private String spbDesc;
 }

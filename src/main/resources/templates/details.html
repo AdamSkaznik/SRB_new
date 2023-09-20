@@ -20,33 +20,89 @@
 	</div>
 	<div class="row">
 		<table th:object="${event}" class="table table-bordered table-striped" style="width: 100%">
-<!--			<thead>-->
 			<tr>
-				<th> L.DZ.</th>
+				<td> L.DZ.</td>
+				<td colspan="3" th:utext="${event.eventSystemNr}" style="font-weight: bold"></td>
 			</tr>
 			<tr>
-				<th>ZGŁASZAJĄCY INTERWENCJĘ</th>
+				<td>ZGŁASZAJĄCY INTERWENCJĘ</td>
+				<td colspan="3" th:utext="${event.reporting}" style="font-weight: bold"></td>
 			</tr>
 			<tr>
-				<th>DANE DOTYCZĄCE INTERWENCJI (kategoria zgłoszenia)</th>
+				<td>DANE DOTYCZĄCE INTERWENCJI (kategoria zgłoszenia)</td>
+				<td colspan="3" th:object="${eventType}" th:utext="${eventType.eventTypeName}"></td>
 			</tr>
 			<tr>
-				<th>
+				<td>
 					LOKALIZACJA
-				</th>
+				</td>
+				<td th:object="${place}" th:utext="Terminal  + ': ' +${place.placeName}"></td>
+				<td th:object="${level}" th:utext="Poziom + ': ' +${level.levelName}"></td>
+				<td th:object="${zone}" th:utext="Strefa + ': ' +${zone.zoneName}"></td>
+			</tr>
+			<tr>
+				<td>OPIS WYDARZENIA</td>
+				<td colspan="3" th:utext="${event.eventDesc}"></td>
+			</tr>
+			<tr>
+				<td> CZAS TRWANIA INTERWENCJI</td>
+				<td colspan="3"></td>
 
 			</tr>
 			<tr>
-				<th> CZAS TRWANIA INTERWENCJI</th>
+				<td> ZAANGAŻOWANIE SŁUŻB PAŃSTOWYCH</td>
+				<td colspan="3">
+
+				</td>
 			</tr>
 			<tr>
-				<th> ZAANGAŻOWANIE SŁUŻB PAŃSTOWYCH</th>
+				<td> ZAANGAŻOWANIE SŁUŻB MEDYCZNYCH</td>
+				<td colspan="3"></td>
 			</tr>
-<!--			</thead>-->
+			<tr>
+				<td> UŻYTE ŚPB</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> PODJĘTE CZYNNOŚCI</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> CZYNNOŚCI PRZED UŻYCIEM ŚPB</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> CZYNNOŚCI PO UŻYCIU ŚPB</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> OGÓLNY STAN ZDROWIA</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> CZYNNOŚCI PODJĘTE WSPÓLNIE Z</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> INNE ISTOTNE INFORMACJE</td>
+				<td colspan="3"></td>
+			</tr>
+			<tr>
+				<td> DANE OSOBY W STOSUNKU DO KTÓREJ PODEJMOWANO CZYNNOŚCI</td>
+				<td colspan="3"></td>
+			</tr>
 		</table>
-
 	</div>
-
+	<div>
+		<br>
+	</div>
+	<div class="row">
+		<center><h2> WYDANE DYSPOZYCJE</h2></center>
+	</div>
+	<div class="row">
+		<table th:object="${instructions}" class="table table-bordered table-striped" style="width: 100%">
+		</table>
+	</div>
 </div>
 </body>
 </html>

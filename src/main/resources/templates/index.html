@@ -684,19 +684,19 @@
 
             ],
             "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                if(aData["eventStatus"].eventStatusId == 1){
+                if(aData["eventStatus"].eventStatusId == '1'){
                     $('td', nRow).css('background-color','red');
                     $('td', nRow).css('color','white');
-                }
-                if(aData["eventStatus"].eventStatusId == 2){
+                } else
+                if(aData["eventStatus"].eventStatusId == '2'){
                     $('td', nRow).css('background-color','blue');
                     $('td', nRow).css('color','white');
-                }
-                if(aData["eventStatus"].eventStatusId == 3){
+                } else
+                if(aData["eventStatus"].eventStatusId == '3'){
                     $('td', nRow).css('background-color','green');
                     $('td', nRow).css('color','red');
-                }
-                if(aData["eventStatus"].eventStatusId == 4){
+                } else
+                if(aData["eventStatus"].eventStatusId == '4'){
                     $('td', nRow).css('background-color','black');
                 }
                 return nRow;
@@ -772,7 +772,7 @@
         <!--$('.filter').remove();-->
         $(".fill").addClass("fs");
         $('.fs').change(function () {
-            table1.columns(2).search(this.value).draw();
+            table1.columns(1).search(this.value).draw();
         });
     });
     $('#newEvents').on('click', function (){

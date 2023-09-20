@@ -12,7 +12,7 @@ import java.util.List;
 public interface InstructionsService {
 
     List<Instructions> getAll();
-
+    List<Instructions> getByEventId(Long eventId);
     Instructions getById(Long id);
 //    Instructions getByName(String name);
     void saveInstructions(Instructions instructions);

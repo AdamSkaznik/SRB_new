@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -306,7 +307,17 @@ public ResponseEntity<Void> saveNewInstructions(@RequestBody Temp temp, Principa
 @GetMapping("/details/{id}")
 public String details(@PathVariable Long id, Model model){
     Event event = eventServiceImpl.getById(id);
+    EventType eventType = eventTypeServiceImpl.getById(event.getEventType().getEventTypeId());
+    Place place = placeServiceImpl.getById(event.getPlace().getPlaceId());
+    Level level = levelServiceImpl.getById(event.getLevel().getLevelId());
+    Zone zone = zoneServiceImpl.getById(event.getZone().getZoneId());
+    List<Instructions> instructions = instructionsServiceImpl.getByEventId(id);
     model.addAttribute("event", event);
+    model.addAttribute("eventType", eventType);
+    model.addAttribute("place", place);
+    model.addAttribute("level", level);
+    model.addAttribute("zone", zone);
+    model.addAttribute("instructions", instructions);
     return "/details";
 }
 }

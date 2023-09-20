@@ -6,24 +6,20 @@
 package com.airportspolish.SRB.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
-
+// model dla zaangażowanych służb zewnętrznych
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_closeType")
-public class CloseType {
+@Table(name = "tab_involvedServices")
+public class InvolvedServices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String closeTypeName;
-    private String closeTypeDesc;
-    private boolean active;
-
+    private Long involvedId;
+    private String involvedName;
+    private String involvedDesc;
 }

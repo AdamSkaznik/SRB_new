@@ -28,6 +28,11 @@ public class InstructionsServiceImpl implements InstructionsService {
     }
 
     @Override
+    public List<Instructions> getByEventId(Long eventId) {
+        return instructionsRepository.getByEventId(eventId);
+    }
+
+    @Override
     public Instructions getById(Long id) {
         return instructionsRepository.getReferenceById(id);
     }
