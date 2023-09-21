@@ -156,14 +156,13 @@
                 data: JSON.stringify(patrolStatus),
                 dataType: "json",
                 success: function (savedPatrolStatus) {
-                    // alert("Dodano poziom: " + savedLevel.levelName + " " + savedLevel.levelDesc);
+
                     toastr.success("Dodano status patrolu: " + savedPatrolStatus.patrolStatusName + " " + savedPatrolStatus.patrolStatusDesc);
                     window.setTimeout(function () {
                         $("#patrolStatusAdd").modal("hide");
                         location.reload()
                     }, 1000)
 
-                    // toastr.success("Dodano poziom: " + savedLevel.levelName + " " + savedLevel.levelDesc);
                 },
                 error: function () {
                     // alert("Wystąpił błąd podczas zapisu.");

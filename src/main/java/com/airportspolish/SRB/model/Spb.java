@@ -23,4 +23,5 @@ public class Spb {
     private Long spbId;
     private String spbName;
     private String spbDesc;
+    private boolean spbActive;
 }

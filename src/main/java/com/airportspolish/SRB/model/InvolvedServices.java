@@ -22,4 +22,5 @@ public class InvolvedServices {
     private Long involvedId;
     private String involvedName;
     private String involvedDesc;
+    private boolean involvedActive;
 }

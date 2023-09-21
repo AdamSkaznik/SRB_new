@@ -42,6 +42,10 @@ public class AdminControler {
     EventTypeServiceImpl eventTypeServiceImpl;
     @Autowired
     EventStatusServiceImpl eventStatusServiceImpl;
+    @Autowired
+    InvolvedServicesServiceImpl involvedServicesServiceImpl;
+    @Autowired
+    SpbServiceImpl spbServiceImpl;
 
     @GetMapping("/admin/addLevel")
     public String addLevel(Model model, Level level){

@@ -116,6 +116,14 @@ public class Event {
     @JoinColumn(name = "closeTypeId", nullable = true)
     private CloseType closeType;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "eventInvolved", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "involved_id"))
+    private Set<InvolvedServices> involvedServices = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "eventSpb", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "spb_id"))
+    private Set<Spb> spbs = new HashSet<>();
+
 
 
 }

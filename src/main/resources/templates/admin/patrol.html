@@ -175,7 +175,7 @@
                 data: JSON.stringify(patrol),
                 dataType: "json",
                 success: function (savedPatrol) {
-                    // alert("Dodano poziom: " + savedLevel.levelName + " " + savedLevel.levelDesc);
+
                     toastr.success("Dodano patrol: " + savedPatrol.patrolName + " " + savedPatrol.patrolDesc);
                     window.setTimeout(function () {
                         $("#patrolAdd").modal("hide");
@@ -183,7 +183,7 @@
                     }, 1000)
                 },
                 error: function () {
-                    // alert("Wystąpił błąd podczas zapisu.");
+
                     toastr.error("Wystąpił błąd podczas zapisu.");
                 }
 

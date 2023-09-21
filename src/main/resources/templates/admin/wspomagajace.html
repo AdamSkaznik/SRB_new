@@ -12,13 +12,13 @@
 <body>
 <div class="container">
 	<br><br>
-	<p><a href="#" class="btn btn-danger" id="add_zone"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj strefę</a></p>
+	<p><a href="#" class="btn btn-danger" id="add_wspom"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj służby wspomagające</a></p>
 	<div class="row">
-		<center><h2>Wykaz stref</h2></center>
+		<center><h2>Wykaz służb wspomagających</h2></center>
 	</div>
 	<br>
 	<div class="row">
-		<table id="zone" class="table table-bordered table-striped" style="width: 100%">
+		<table id="sluzby" class="table table-bordered table-striped" style="width: 100%">
 			<thead>
 			<tr>
 				<th>Lp.</th>
@@ -31,28 +31,28 @@
 
 	</div>
 	<!--	start modal add-->
-	<div class="modal fade" id="zoneAdd">
+	<div class="modal fade" id="involvedAdd">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">Dodanie nowej strefy <i class="glyphicon glyphicon-exclamation-sign"
-																	  style="color: blue"></i></h4>
+					<h4 class="modal-title">Dodanie nowej służby <i class="glyphicon glyphicon-exclamation-sign"
+																	style="color: blue"></i></h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body justify-content-center">
-					<form class="form" method="post" th:object="${zone}">
+					<form class="form" method="post" th:object="${involvedServices}">
 						<div class="controls">
 							<div class="panel panel-primary">
 								<div class="panel-heading"></div>
 								<div class="panel-body">
 									<div class="col-sm">
-										<label>Nazwa strefy</label>
-										<input type="text" class="form-control" id="zoneName">
+										<label>Nazwa służby</label>
+										<input type="text" class="form-control" id="involvedName">
 									</div>
 									<div class="col-sm">
-										<label>Dodatkowy opis strefy</label>
+										<label>Dodatkowy opis służby</label>
 										<!--									<input type="text" class="form-control" id="levelName">-->
-										<textarea class="form-control rounded-0" id="zoneDesc" rows="5"></textarea>
+										<textarea class="form-control rounded-0" id="involvedDesc" rows="5"></textarea>
 									</div>
 								</div>
 							</div>
@@ -61,7 +61,7 @@
 				</div>
 				<div class="modal-footer">
 					<div class="btn-group" role="group">
-						<button type="submit" class="btn btn-primary" id="addNewZone" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
+						<button type="submit" class="btn btn-primary" id="addNewSluzba" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
 						<div class="col-sm-1"></div>
 						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px"><i class="glyphicon glyphicon-remove"></i> Zamknij</button>
 					</div>
@@ -76,8 +76,8 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        var table = $('#zone').DataTable({
-            "sAjaxSource" : "/api/zone/v1",
+        var table = $('#sluzby').DataTable({
+            "sAjaxSource" : "/api/involved/v1",
             "sAjaxDataProp": "",
             "aoColumns": [
                 {"mData": null,
@@ -85,8 +85,8 @@
                         return meta.index +1;
                     }},
 
-                { "mData": "zoneName"},
-                { "mData": "zoneDesc" },
+                { "mData": "involvedName"},
+                { "mData": "involvedDesc" },
                 {"mData": null,
                     "orderable" : false,
                     "width": "100px",
@@ -118,15 +118,15 @@
             }
         })
 
-        $('#place tbody').on('click', '#edytuj', function () {
+        $('#sluzby tbody').on('click', '#edytuj', function () {
             var data = table.row($(this).parents('tr')).data();
         })
-        $('#place tbody').on('click', '#usun', function () {
+        $('#sluzby tbody').on('click', '#usun', function () {
             var data = table.row($(this).parents('tr')).data();
             if (confirm("Potwierdź usunięcie")){
-                window.location = '/admin/deleteZone/'+data["id"];
+                window.location = '/admin/deleteInvolved/'+data["id"];
             } else {
-                window.location = '/admin/zone';
+                window.location = '/admin/wspomagajace';
             }
         })
 
@@ -136,25 +136,25 @@
             });
         }).draw();
 
-        $('#add_zone').on('click', function (){
-            $('#zoneAdd').modal('show');
+        $('#add_wspom').on('click', function (){
+            $('#involvedAdd').modal('show');
         });
 
-        $(document).delegate('#addNewZone', 'click', function (){
-            let zone = {
-                zoneName : $('#zoneName').val(),
-                zoneDesc : $('#zoneDesc').val()
+        $(document).delegate('#addNewSluzba', 'click', function (){
+            let involved = {
+                involvedName : $('#involvedName').val(),
+                involvedDesc : $('#involvedDesc').val()
             };
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/api/saveZone",
-                data: JSON.stringify(zone),
+                url: "/api/saveInvolved",
+                data: JSON.stringify(involved),
                 dataType: "json",
-                success: function (savedZone) {
-                    toastr.success("Dodano strefę: " + savedZone.zoneName + " " + savedZone.zoneDesc);
+                success: function (savedInvolved) {
+                    toastr.success("Dodano służbę: " + savedInvolved.involvedName + " " + savedInvolved.involvedDesc);
                     window.setTimeout(function(){
-                        $("#levelAdd").modal("hide");
+                        $("#involvedAdd").modal("hide");
                         location.reload()},1000)
                 },
                 error: function () {
