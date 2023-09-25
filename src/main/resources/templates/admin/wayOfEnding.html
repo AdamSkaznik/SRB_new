@@ -1,0 +1,172 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+<div class="container">
+  <br><br>
+  <p><a href="#" class="btn btn-danger" id="add_wayOfEnding"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj sposób zakończenia</a></p>
+  <div class="row">
+    <center><h2>Wykaz typów zakończeń interwencji</h2></center>
+  </div>
+  <br>
+  <div class="row">
+    <table id="wayOfEnding" class="table table-bordered table-striped" style="width: 100%">
+      <thead>
+      <tr>
+        <th>Lp.</th>
+        <th>Nazwa</th>
+        <th>Opis</th>
+        <th>Akcje</th>
+      </tr>
+      </thead>
+    </table>
+
+  </div>
+  <!--	start modal add-->
+  <div class="modal fade" id="wayOfEndingAdd">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Dodanie nowego sposobu zakończenia<i class="glyphicon glyphicon-exclamation-sign"
+                                                                                  style="color: blue"></i></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body justify-content-center">
+          <form class="form" method="post" th:object="${wayOfEnding}">
+            <div class="controls">
+              <div class="panel panel-primary">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                  <div class="col-sm">
+                    <label>Nazwa sposobu zakończenia</label>
+                    <input type="text" class="form-control" id="wayOfEndingName">
+                  </div>
+                  <div class="col-sm">
+                    <label>Dodatkowy opis</label>
+                    <!--									<input type="text" class="form-control" id="levelName">-->
+                    <textarea class="form-control rounded-0" id="wayOfEndingDesc" rows="5"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group" role="group">
+            <button type="submit" class="btn btn-primary" id="addNewWayOfEnding" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
+            <div class="col-sm-1"></div>
+            <button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px"><i class="glyphicon glyphicon-remove"></i> Zamknij</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--	end modal add-->
+</div>
+</body>
+</html>
+<script type="text/javascript">
+
+  $(document).ready(function () {
+    var table = $('#wayOfEnding').DataTable({
+      "sAjaxSource" : "/api/wayOfEnding/v1",
+      "sAjaxDataProp": "",
+      "aoColumns": [
+        {"mData": null,
+          "render" : function (data, type, full, meta) {
+            return meta.index +1;
+          }},
+
+        { "mData": "wayOfEndingName"},
+        { "mData": "wayOfEndingDesc" },
+        {"mData": null,
+          "orderable" : false,
+          "width": "100px",
+          "render": function () {
+            return '<button id="edytuj" class="btn btn-success btn-circle" title="Edycja" ><i class="glyphicon glyphicon-pencil"></i></button>&nbsp;<button id="usun" class="btn btn-danger" title="Usuń"><i class="glyphicon glyphicon-remove"></i></button>';
+          }}
+      ],
+      "language": {
+        "processing": "Przetwarzanie...",
+        "search": "Szukaj:",
+        "lengthMenu": "Pokaż _MENU_ pozycji",
+        "info": "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        "infoEmpty": "Pozycji 0 z 0 dostępnych",
+        "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        "infoPostFix": "",
+        "loadingRecords": "Wczytywanie...",
+        "zeroRecords": "Nie znaleziono pasujących pozycji",
+        "emptyTable": "Nie znaleziono rekordów",
+        "paginate": {
+          "first": "Pierwsza",
+          "previous": "Poprzednia",
+          "next": "Następna",
+          "last": "Ostatnia"
+        },
+        "aria": {
+          "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+          "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+        }
+      }
+    })
+
+    $('#wayOfEnding tbody').on('click', '#edytuj', function () {
+      var data = table.row($(this).parents('tr')).data();
+
+    })
+    $('#wayOfEnding tbody').on('click', '#usun', function () {
+      var data = table.row($(this).parents('tr')).data();
+      if (confirm("Potwierdź usunięcie")){
+        window.location = '/admin/deletewayOfEnding/'+data["id"];
+      } else {
+        window.location = '/admin/spb';
+      }
+    })
+
+    table.on('order.dt search.dt', function () {
+      table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+        cell.innerHTML = i + 1;
+      });
+    }).draw();
+
+    $('#add_wayOfEnding').on('click', function (){
+      $('#wayOfEndingAdd').modal('show');
+    });
+
+    $(document).delegate('#addNewWayOfEnding', 'click', function (){
+      let wayOfEnding = {
+        wayOfEndingName : $('#wayOfEndingName').val(),
+        wayOfEndingDesc : $('#wayOfEndingDesc').val()
+      };
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/admin/wayOfEnding",
+        data: JSON.stringify(wayOfEnding),
+        dataType: "json",
+        success: function (savedWayOfEnding) {
+          toastr.success("Dodano nowy sposób zakończenia: " + savedWayOfEnding.wayOfEndingName + " " + savedWayOfEnding.wayOfEndingDesc);
+          window.setTimeout(function(){
+            $("#spbAdd").modal("hide");
+            location.reload()},1000)
+        },
+        error: function () {
+          toastr.error("Wystąpił błąd podczas zapisu.");
+        }
+
+      })
+
+    });
+
+
+  })
+
+</script>

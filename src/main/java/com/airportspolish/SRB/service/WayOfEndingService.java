@@ -12,5 +12,5 @@ import java.util.List;
 public interface WayOfEndingService {
     List<WayOfEnding> getAll();
     WayOfEnding getById(Long id);
-    void saveWayOdEnding(WayOfEnding wayOfEnding);
+    WayOfEnding saveWayOdEnding(WayOfEnding wayOfEnding);
 }

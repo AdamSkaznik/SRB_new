@@ -9,6 +9,8 @@ import com.airportspolish.SRB.model.*;
 import com.airportspolish.SRB.repository.RoleRepository;
 import com.airportspolish.SRB.service.UserService;
 import com.airportspolish.SRB.service.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class AdminControler {
+    private static final Logger logger = LoggerFactory.getLogger(AdminControler.class);
     @Autowired
     UserService userService;
     @Autowired
@@ -193,5 +196,14 @@ public class AdminControler {
         mav.addObject("allRoles", roles);
 
         return mav;
+    }
+    @GetMapping("/admin/wspomagajace")
+    public String wspomagajace(){
+        return "/admin/wspomagajace";
+    }
+
+    @GetMapping("/admin/spb")
+    public String spb(){
+        return "/admin/spb";
     }
 }

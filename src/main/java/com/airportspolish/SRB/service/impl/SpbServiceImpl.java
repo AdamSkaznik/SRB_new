@@ -33,7 +33,9 @@ public class SpbServiceImpl implements SpbService {
     }
 
     @Override
-    public void save(Spb spb) {
-        spbRepository.save(spb);
+    public Spb save(Spb spb) {
+        return spbRepository.save(spb);
     }
+
+
 }

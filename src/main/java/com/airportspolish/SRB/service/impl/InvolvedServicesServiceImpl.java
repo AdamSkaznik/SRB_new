@@ -33,12 +33,9 @@ public class InvolvedServicesServiceImpl implements InvolvedServicesService {
     }
 
     @Override
-    public void save(InvolvedServices involvedServices) {
-        involvedServicesRepository.save(involvedServices);
+    public InvolvedServices save(InvolvedServices involvedServices) {
+        return involvedServicesRepository.save(involvedServices);
     }
 
-//    @Override
-//    public List<InvolvedServices> search(String involvedName) {
-//        return ;
-//    }
+
 }

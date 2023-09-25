@@ -27,5 +27,5 @@ public class WayOfEnding {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int wayOfEndingId;
     private String wayOfEndingName;
-    private String wayOdEndingDesc;
+    private String wayOfEndingDesc;
 }

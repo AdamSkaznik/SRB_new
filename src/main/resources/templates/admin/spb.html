@@ -12,13 +12,13 @@
 <body>
 <div class="container">
 	<br><br>
-	<p><a href="#" class="btn btn-danger" id="add_spb"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj strefę</a></p>
+	<p><a href="#" class="btn btn-danger" id="add_spb"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj Środek Przymusu Bezpośredniego</a></p>
 	<div class="row">
 		<center><h2>Wykaz używanych Środków Przymusu Bezpośredniego</h2></center>
 	</div>
 	<br>
 	<div class="row">
-		<table id="zone" class="table table-bordered table-striped" style="width: 100%">
+		<table id="spb" class="table table-bordered table-striped" style="width: 100%">
 			<thead>
 			<tr>
 				<th>Lp.</th>
@@ -149,11 +149,11 @@
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/api/saveSpb",
+                url: "/api/admin/saveSpb",
                 data: JSON.stringify(spb),
                 dataType: "json",
                 success: function (savedSpb) {
-                    toastr.success("Dodano strefę: " + savedSpb.spbName + " " + savedSpb.spbDesc);
+                    toastr.success("Dodano Środek Przymusu Bezpośredniego : " + savedSpb.spbName + " " + savedSpb.spbDesc);
                     window.setTimeout(function(){
                         $("#spbAdd").modal("hide");
                         location.reload()},1000)

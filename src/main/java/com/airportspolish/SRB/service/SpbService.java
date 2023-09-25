@@ -12,5 +12,5 @@ import java.util.List;
 public interface SpbService {
     List<Spb> getAll();
     Spb getById(Long id);
-    void save (Spb spb);
+    Spb save(Spb spb);
 }

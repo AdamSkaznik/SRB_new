@@ -12,6 +12,6 @@ import java.util.List;
 public interface InvolvedServicesService {
     List<InvolvedServices> getAll();
     InvolvedServices getById(Long id);
-    void save(InvolvedServices involvedServices);
+    InvolvedServices save(InvolvedServices involvedServices);
 //    List<InvolvedServices> search(String involvedName);
 }

@@ -44,6 +44,8 @@ public class AppRestController {
     PatrolStatusServiceImpl patrolStatusServiceImpl;
     @Autowired
     LogiServiceImpl logiServiceImpl;
+    @Autowired
+    InvolvedServicesServiceImpl involvedServicesServiceImpl;
 
 
     @RequestMapping(path = "/events/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -198,6 +200,8 @@ public class AppRestController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     }
+
+
 
     @RequestMapping(path = "/zone/search/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Zone>> zoneSearch(String term) {

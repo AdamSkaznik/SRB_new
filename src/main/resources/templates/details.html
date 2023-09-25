@@ -52,7 +52,11 @@
 			<tr>
 				<td> ZAANGAŻOWANIE SŁUŻB PAŃSTOWYCH</td>
 				<td colspan="3">
-
+				<input type="checkbox" name="services"
+					   th:each="involved : ${allInvolved}"
+					   th:text="${involved.involvedName}"
+					   th:value="${involved.involvedId}"
+					   th:field="*{involved}"
 				</td>
 			</tr>
 			<tr>

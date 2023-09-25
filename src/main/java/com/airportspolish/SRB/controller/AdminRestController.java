@@ -9,16 +9,20 @@ import com.airportspolish.SRB.model.*;
 import com.airportspolish.SRB.repository.LevelRepository;
 import com.airportspolish.SRB.service.UserService;
 import com.airportspolish.SRB.service.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 public class AdminRestController {
+    private static final Logger logger = LoggerFactory.getLogger(AdminRestController.class);
     @Autowired
     UserService userService;
     @Autowired
@@ -35,6 +39,10 @@ public class AdminRestController {
     PatrolStatusServiceImpl patrolStatusServiceImpl;
     @Autowired
     EventTypeServiceImpl eventTypeServiceImpl;
+    @Autowired
+    InvolvedServicesServiceImpl involvedServicesServiceImpl;
+    @Autowired
+    SpbServiceImpl spbServiceImpl;
 
     @PostMapping("/api/admin/saveLevel")
     public @ResponseBody Level saveLevel(@RequestBody Level level, Principal principal) {
@@ -96,4 +104,50 @@ public class AdminRestController {
         return patrolStatusServiceImpl.savePatrolStatus(patrolStatus);
     }
 
+    @RequestMapping(path = "/api/involved/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<InvolvedServices>> allServices(){
+        try {
+            return new ResponseEntity<List<InvolvedServices>>(involvedServicesServiceImpl.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Błąd podczas pobierania służ wspomagających z API");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/api/admin/saveInvolved")
+    public @ResponseBody
+    InvolvedServices involvedServices(@RequestBody InvolvedServices involvedServices, Principal principal){
+      involvedServices.setInvolvedName(involvedServices.getInvolvedName());
+      involvedServices.setInvolvedDesc(involvedServices.getInvolvedDesc());
+      involvedServices.setInvolvedActive(true);
+        int who = userService.findUserByUserName(principal.getName()).getId();
+        Logi logi = new Logi();
+        logi.setUserId(who);
+        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nową służbę wspomagjącą  : " + involvedServices.getInvolvedName());
+        logiServiceImpl.saveLog(logi);
+        return involvedServicesServiceImpl.save(involvedServices);
+    }
+
+    @RequestMapping(path = "/api/spb/v1")
+    public ResponseEntity<List<Spb>> allSpb(){
+        try {
+            return new ResponseEntity<List<Spb>>(spbServiceImpl.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/api/admin/saveSpb")
+    public @ResponseBody
+    Spb spb(@RequestBody Spb spb, Principal principal){
+        spb.setSpbName(spb.getSpbName());
+        spb.setSpbDesc(spb.getSpbDesc());
+        spb.setSpbActive(true);
+        int who = userService.findUserByUserName(principal.getName()).getId();
+        Logi logi = new Logi();
+        logi.setUserId(who);
+        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy Środek Przymusu Bezpośredniego : " + spb.getSpbName());
+        logiServiceImpl.saveLog(logi);
+        return spbServiceImpl.save(spb);
+    }
 }
