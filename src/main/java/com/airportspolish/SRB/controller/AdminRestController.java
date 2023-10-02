@@ -43,6 +43,8 @@ public class AdminRestController {
     InvolvedServicesServiceImpl involvedServicesServiceImpl;
     @Autowired
     SpbServiceImpl spbServiceImpl;
+   @Autowired
+   CloseTypeServiceImpl closeTypeServiceImpl;
 
     @PostMapping("/api/admin/saveLevel")
     public @ResponseBody Level saveLevel(@RequestBody Level level, Principal principal) {
@@ -149,5 +151,30 @@ public class AdminRestController {
         logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy Środek Przymusu Bezpośredniego : " + spb.getSpbName());
         logiServiceImpl.saveLog(logi);
         return spbServiceImpl.save(spb);
+    }
+
+    @RequestMapping(path = "/api/closeType/v1")
+    public ResponseEntity<List<CloseType>> allCloseType(){
+        try {
+            return new ResponseEntity<List<CloseType>>(closeTypeServiceImpl.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/api/admin/saveCloseType")
+    public @ResponseBody
+    CloseType closeType(@RequestBody CloseType closeType, Principal principal){
+//        wayOfEnding.setWayOfEndingName(wayOfEnding.getWayOfEndingName());
+//        wayOfEnding.setWayOfEndingDesc(wayOfEnding.getWayOfEndingDesc());
+        closeType.setCloseTypeName(closeType.getCloseTypeName());
+        closeType.setCloseTypeDesc(closeType.getCloseTypeDesc());
+        closeType.setActive(true);
+        int who = userService.findUserByUserName(principal.getName()).getId();
+        Logi logi = new Logi();
+        logi.setUserId(who);
+        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy sposób zakończenia : " + closeType.getCloseTypeName());
+        logiServiceImpl.saveLog(logi);
+        return closeTypeServiceImpl.save(closeType);
     }
 }

@@ -47,97 +47,10 @@ public class EventController {
     InstructionsServiceImpl instructionsServiceImpl;
     @Autowired
     CloseTypeServiceImpl closeTypeServiceImpl;
-
-//    @PostMapping("/api/saveEvent")
-//    public String saveEvent(@RequestBody Event event, Principal principal) {
-//        int year = Year.now().getValue();
-//        String rok = String.valueOf(year);
-//        Event event1 = eventServiceImpl.getLast(rok);
-//        System.out.println("event1 : " + event1);
-//        Integer lastLdz = null;
-//        if (event1 == null){
-//           lastLdz = 0;
-//        } else {
-//            lastLdz = event1.getEventNr();
-//        }
-//        System.out.println("Last Ldz. : " + lastLdz);
-//        int newLdz = lastLdz+1;
-//        System.out.println("New Ldz. : "+ newLdz);
-//        event.setEventNr(newLdz);
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//        DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("MM");
-//        DateTimeFormatter dtf4 = DateTimeFormatter.ofPattern("HH:mm:ss");
-//        LocalDateTime now = LocalDateTime.now();
-//        System.out.println("Sformatowana data : " + dtf.format(now));
-//        String reportedDate = dtf2.format(now);
-//        String reportedMonth = dtf3.format(now);
-//        String reportedTime = dtf4.format(now);
-//        System.out.println("Data po formacie : " + reportedDate);
-//        System.out.println("Miesiąc po formacie : " + reportedMonth);
-//        System.out.println("Czas po formacie : " + reportedTime);
-//        String newSystemNr = "KD - " + newLdz +"/" + dtf.format(now);
-////        long category = Long.valueOf(event.getCategoryId());
-////        EventType eventType = eventTypeServiceImpl.getById(category);
-////        System.out.println("EvenntType : " + eventType);
-////        System.out.println("*********************************");
-//
-//        event.setEventSystemNr(newSystemNr);
-//        event.setYear(rok);
-//        event.setReportingDate(reportedDate);
-//        event.setMonth(reportedMonth);
-//        int eventTypeId = event.getEventType().getEventTypeId();
-//        System.out.println("Event type : " + eventTypeId);
-////        event.getEventType().setEventTypeId(event.getEventType().getEventTypeId());
-////        event.setReportingTime1(reportedTime);
-////        event.getEventType().setEventTypeId(event.getCategoryId());
-////        event.setEventType(event.getEventType().getEventTypeId());
-////        event.setEventType(eventType.getEventTypeId());
-//        System.out.println("I to co przychodzi po API. Opis : " + event.getEventDesc() + " Kto zgłasza : " + event.getReporting() + " Typ : " + event.getEventType().getEventTypeId() + " Strefa : " + event.getZone().getZoneId());
-//        int who = userService.findUserByUserName(principal.getName()).getId();
-//        Logi logi = new Logi();
-//        logi.setUserId(who);
-//        logi.setLogsDesc("Użytkownik : " + principal.getName() + " dodał nowe wydarzenie : ");
-//        try{
-//            logiServiceImpl.saveLog(logi);
-//            eventServiceImpl.saveEvent(event);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Błąd zapisu :" + e.getMessage());
-//        }
-//
-//        return "redirect:/index";
-//    }
-
-//    @PostMapping("/api/saveEvent/v2")
-//    public ResponseEntity<String> saveOrUpdateEvent(@RequestBody Event event, Principal principal){
-//        String reporting = null;
-//        String eventDesc = null;
-//        reporting = event.getReporting();
-//        eventDesc = event.getEventDesc();
-//        event.setReporting(reporting);
-//        event.setEventDesc(eventDesc);
-//        System.out.println("Pobrane dane: " + reporting + " " + eventDesc);
-//        int year = Year.now().getValue();
-//        String rok = String.valueOf(year);
-//        Event event1 = eventServiceImpl.getLast(rok);
-//        Integer lastLdz = null;
-//        if (event1 == null){
-//            lastLdz = 0;
-//        } else {
-//            lastLdz = event1.getEventNr();
-//        }
-//        int newLdz = lastLdz+1;
-//        try {
-//            eventServiceImpl.saveEvent(event);
-//            System.out.println("ZAPISANOOOOOO!!!!!!!");
-//            return ResponseEntity.ok("Zapis do bazy powódł się");
-//        } catch (Exception e) {
-//            String błąd = e.toString();
-//            System.out.println("Błąd ....." + błąd);
-//          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Wystąpił błąd podczas zapisu do bazy");
-//        }
-//    }
+    @Autowired
+    InvolvedServicesServiceImpl involvedServicesServiceImpl;
+    @Autowired
+    HistoryServiceImpl historyServiceImpl;
 
 @PostMapping("/api/saveEvent")
     public ResponseEntity<Void> saveEvent(@RequestBody Temp temp, Principal principal){
@@ -147,6 +60,7 @@ public class EventController {
     Long id3 = temp.getTempPlaceId();
     Long id4 = temp.getTempLevelId();
     Zone zone = zoneServiceImpl.getById(id1);
+    boolean tempNewRecord = false;
     System.out.println("Zone : " + zone.getZoneId() + "; " + zone.getZoneName());
     EventType eventType = eventTypeServiceImpl.getById(id2);
     System.out.println("Event Type :" + eventType.getEventTypeId() + "; " + eventType.getEventTypeName());
@@ -190,6 +104,11 @@ public class EventController {
         event.setEventStatus(eventStatus);
         event.setPatrol(patrol);
         eventServiceImpl.saveEvent(event);
+        History history = new History();
+        history.setHistoryDesc("Dodano nową interwencję przez : " + principal.getName());
+        history.setEvent(event);
+        historyServiceImpl.saveHistory(history);
+
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -202,6 +121,10 @@ public class EventController {
     Patrol patrol = patrolServiceImpl.getById(temp.getTempPatrolId());
     EventStatus eventStatus = eventStatusServiceImpl.getById(2);
     try {
+        History history = new History();
+        history.setHistoryDesc("Dodano do obsługi patrol przez : " + principal.getName());
+        history.setEvent(event);
+        historyServiceImpl.saveHistory(history);
         Event event1 = eventServiceImpl.getById(temp.getTempEventId());
         event.setId(event1.getId());
         event.setCreatedBy(event1.getCreatedBy());
@@ -217,10 +140,15 @@ public class EventController {
         event.setZone(event1.getZone());
         event.setPatrol(patrol);
         event.setEventStatus(eventStatus);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        LocalDateTime now = LocalDateTime.now();
         Date date = new Date();
         event.setPatrolSent(date);
         eventServiceImpl.saveEvent(event);
+//        History history = new History();
+//        history.setHistoryDesc("Dodano do obsługi patrol przez : " + principal.getName());
+//        history.setEvent(event);
+//        historyServiceImpl.saveHistory(history);
 //        eventServiceImpl.updatePatrol(Long.valueOf(patrol.getPatrolId()), eventStatus.getEventStatusId(), temp.getTempEventId());
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
@@ -255,6 +183,10 @@ public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal,
         Date date = new Date();
         event.setIntervention(date);
         eventServiceImpl.saveEvent(event);
+        History history = new History();
+        history.setHistoryDesc("Patrol rozpoczął interwencję");
+        history.setEvent(event);
+        historyServiceImpl.saveHistory(history);
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
         e.printStackTrace();
@@ -299,6 +231,10 @@ public ResponseEntity<Void> saveNewInstructions(@RequestBody Temp temp, Principa
         instructions.setEvent(event);
         instructions.setCreatedBy(principal.getName());
         instructionsServiceImpl.saveInstructions(instructions);
+        History history = new History();
+        history.setHistoryDesc("Do interwencji dodano nowe polecenia wydane przez : " + principal.getName());
+        history.setEvent(event);
+        historyServiceImpl.saveHistory(history);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }catch (Exception e) {
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
@@ -311,6 +247,7 @@ public String details(@PathVariable Long id, Model model){
     Place place = placeServiceImpl.getById(event.getPlace().getPlaceId());
     Level level = levelServiceImpl.getById(event.getLevel().getLevelId());
     Zone zone = zoneServiceImpl.getById(event.getZone().getZoneId());
+    List<InvolvedServices> allInvolved = involvedServicesServiceImpl.getAll();
     List<Instructions> instructions = instructionsServiceImpl.getByEventId(id);
     model.addAttribute("event", event);
     model.addAttribute("eventType", eventType);
@@ -318,6 +255,7 @@ public String details(@PathVariable Long id, Model model){
     model.addAttribute("level", level);
     model.addAttribute("zone", zone);
     model.addAttribute("instructions", instructions);
+//    model.addAttribute("allInvolved", allInvolved);
     return "/details";
 }
 }

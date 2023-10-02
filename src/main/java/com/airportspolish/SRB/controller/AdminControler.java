@@ -206,4 +206,7 @@ public class AdminControler {
     public String spb(){
         return "/admin/spb";
     }
+
+    @GetMapping("/admin/closeType")
+    public String zakanczanie(){return "/admin/closeType";}
 }

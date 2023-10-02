@@ -12,13 +12,13 @@
 <body>
 <div class="container">
   <br><br>
-  <p><a href="#" class="btn btn-danger" id="add_wayOfEnding"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj sposób zakończenia</a></p>
+  <p><a href="#" class="btn btn-danger" id="add_closeType"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj sposób zakończenia</a></p>
   <div class="row">
     <center><h2>Wykaz typów zakończeń interwencji</h2></center>
   </div>
   <br>
   <div class="row">
-    <table id="wayOfEnding" class="table table-bordered table-striped" style="width: 100%">
+    <table id="closeType" class="table table-bordered table-striped" style="width: 100%">
       <thead>
       <tr>
         <th>Lp.</th>
@@ -31,7 +31,7 @@
 
   </div>
   <!--	start modal add-->
-  <div class="modal fade" id="wayOfEndingAdd">
+  <div class="modal fade" id="closeTypeAdd">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -40,19 +40,19 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <div class="modal-body justify-content-center">
-          <form class="form" method="post" th:object="${wayOfEnding}">
+          <form class="form" method="post" th:object="${closeType}">
             <div class="controls">
               <div class="panel panel-primary">
                 <div class="panel-heading"></div>
                 <div class="panel-body">
                   <div class="col-sm">
                     <label>Nazwa sposobu zakończenia</label>
-                    <input type="text" class="form-control" id="wayOfEndingName">
+                    <input type="text" class="form-control" id="closeTypeName">
                   </div>
                   <div class="col-sm">
                     <label>Dodatkowy opis</label>
                     <!--									<input type="text" class="form-control" id="levelName">-->
-                    <textarea class="form-control rounded-0" id="wayOfEndingDesc" rows="5"></textarea>
+                    <textarea class="form-control rounded-0" id="closeTypeDesc" rows="5"></textarea>
                   </div>
                 </div>
               </div>
@@ -61,7 +61,7 @@
         </div>
         <div class="modal-footer">
           <div class="btn-group" role="group">
-            <button type="submit" class="btn btn-primary" id="addNewWayOfEnding" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
+            <button type="submit" class="btn btn-primary" id="addCloseType" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
             <div class="col-sm-1"></div>
             <button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px"><i class="glyphicon glyphicon-remove"></i> Zamknij</button>
           </div>
@@ -76,8 +76,8 @@
 <script type="text/javascript">
 
   $(document).ready(function () {
-    var table = $('#wayOfEnding').DataTable({
-      "sAjaxSource" : "/api/wayOfEnding/v1",
+    var table = $('#closeType').DataTable({
+      "sAjaxSource" : "/api/closeType/v1",
       "sAjaxDataProp": "",
       "aoColumns": [
         {"mData": null,
@@ -85,8 +85,8 @@
             return meta.index +1;
           }},
 
-        { "mData": "wayOfEndingName"},
-        { "mData": "wayOfEndingDesc" },
+        { "mData": "closeTypeName"},
+        { "mData": "closeTypeDesc" },
         {"mData": null,
           "orderable" : false,
           "width": "100px",
@@ -118,16 +118,16 @@
       }
     })
 
-    $('#wayOfEnding tbody').on('click', '#edytuj', function () {
+    $('#closeType tbody').on('click', '#edytuj', function () {
       var data = table.row($(this).parents('tr')).data();
 
     })
-    $('#wayOfEnding tbody').on('click', '#usun', function () {
+    $('#closeType tbody').on('click', '#usun', function () {
       var data = table.row($(this).parents('tr')).data();
       if (confirm("Potwierdź usunięcie")){
-        window.location = '/admin/deletewayOfEnding/'+data["id"];
+        window.location = '/admin/deleteCloseType/'+data["id"];
       } else {
-        window.location = '/admin/spb';
+        window.location = '/admin/closeType';
       }
     })
 
@@ -137,25 +137,25 @@
       });
     }).draw();
 
-    $('#add_wayOfEnding').on('click', function (){
-      $('#wayOfEndingAdd').modal('show');
+    $('#add_closeType').on('click', function (){
+      $('#closeTypeAdd').modal('show');
     });
 
-    $(document).delegate('#addNewWayOfEnding', 'click', function (){
-      let wayOfEnding = {
-        wayOfEndingName : $('#wayOfEndingName').val(),
-        wayOfEndingDesc : $('#wayOfEndingDesc').val()
+    $(document).delegate('#addCloseType', 'click', function (){
+      let closeType = {
+        closeTypeName : $('#closeTypeName').val(),
+        closeTypeDesc : $('#closeTypeDesc').val()
       };
       $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/api/admin/wayOfEnding",
-        data: JSON.stringify(wayOfEnding),
+        url: "/api/admin/saveCloseType",
+        data: JSON.stringify(closeType),
         dataType: "json",
-        success: function (savedWayOfEnding) {
-          toastr.success("Dodano nowy sposób zakończenia: " + savedWayOfEnding.wayOfEndingName + " " + savedWayOfEnding.wayOfEndingDesc);
+        success: function (savedCloseType) {
+          toastr.success("Dodano nowy sposób zakończenia: " + savedCloseType.closeTypeName + " " + savedCloseType.closeTypeDesc);
           window.setTimeout(function(){
-            $("#spbAdd").modal("hide");
+            $("#closeTypeAdd").modal("hide");
             location.reload()},1000)
         },
         error: function () {

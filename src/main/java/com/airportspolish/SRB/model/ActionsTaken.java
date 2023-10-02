@@ -3,29 +3,25 @@
  * All rights reserved.
  */
 
-
-//sposoby zakończenia - słownik
 package com.airportspolish.SRB.model;
 
-
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
+// model dla podjętych czynności
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@Entity
-@Table(name = "tab_ending")
-//model dla sposobów zakończenia
-public class WayOfEnding {
+@Table(name = "tab_actions")
+public class ActionsTaken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int wayOfEndingId;
-    private String wayOfEndingName;
-    private String wayOfEndingDesc;
+    private int actionId;
+    private String actionName;
+    private String actionDesc;
+    private boolean actionActive;
 }

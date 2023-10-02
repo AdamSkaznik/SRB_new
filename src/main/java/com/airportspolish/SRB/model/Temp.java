@@ -33,6 +33,10 @@ public class Temp {
     private Long tempLevelId;
     @Transient
     private int tempPatrolId;
+    @Transient
+    private boolean tempNewRecord;
+    @Transient
+    private Long tempCloseTypeId;
 
 
 

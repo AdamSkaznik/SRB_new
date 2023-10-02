@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +47,10 @@ public class AppRestController {
     LogiServiceImpl logiServiceImpl;
     @Autowired
     InvolvedServicesServiceImpl involvedServicesServiceImpl;
+    @Autowired
+    InstructionsServiceImpl instructionsService;
+    @Autowired
+    CloseTypeServiceImpl closeTypeServiceImpl;
 
 
     @RequestMapping(path = "/events/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -70,8 +75,6 @@ public class AppRestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
-
 
     @RequestMapping(value = "/patrol/search/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Patrol>> searchPatrol(String term){
@@ -184,7 +187,7 @@ public class AppRestController {
         try {
             return new ResponseEntity<List<Level>>(levelServiceImpl.levelSearch(term), HttpStatus.OK);
         } catch (Exception e) {
-            logger.error("Błąd podczas pobierania poszukiwanych danych z ZPI /level/search/v1 " + e);
+            logger.error("Błąd podczas pobierania poszukiwanych danych z API /level/search/v1 " + e);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -201,14 +204,34 @@ public class AppRestController {
     }
     }
 
-
-
     @RequestMapping(path = "/zone/search/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Zone>> zoneSearch(String term) {
         try {
             return new ResponseEntity<List<Zone>>(zoneServiceImpl.getSearch(term), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Błąd podczas pobierania poszukiwania danych z API /zone/search/v1" + e);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "/closeType/search/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<CloseType>> closeTypeSearch(String term){
+        try {
+            return new ResponseEntity<List<CloseType>>(closeTypeServiceImpl.search(term), HttpStatus.OK);
+        } catch (Exception e){
+            logger.error("Błąd podczas pobierania poszukiwania danych z API /closeType/search/v1" + e);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "/api/instructions/v1/{id}", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Instructions>> instruction(@PathVariable Long eventId){
+        try {
+            return new ResponseEntity<List<Instructions>>(instructionsService.getByEventId(eventId), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Błąd podczas pobierania poszukiwania danych z API /instructions/v1" + e);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

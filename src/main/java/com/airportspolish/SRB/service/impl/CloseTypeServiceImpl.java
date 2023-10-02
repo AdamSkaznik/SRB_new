@@ -40,4 +40,9 @@ public class CloseTypeServiceImpl implements CloseTypeService {
     public CloseType save(CloseType closeType) {
         return closeTypeRepository.save(closeType);
     }
+
+    @Override
+    public List<CloseType> search(String closeTypeName){
+        return closeTypeRepository.searchCloseType(closeTypeName);
+    }
 }

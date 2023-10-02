@@ -47,18 +47,9 @@ public class Event {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endIntervention;
-//    @Temporal(TemporalType.DATE)
-//    private Date reportingDate1;
-//    @Temporal(TemporalType.TIME)
-//    private String reportingTime1;
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date eventReportingDate;
-//    @Temporal(TemporalType.DATE)
-//    @CreationTimestamp
+
     @DateTimeFormat(pattern = "yyyy")
     private String year;
-//    @DateTimeFormat(pattern = "MM")
-//    private String month;
     private String eventDesc;
     private boolean useSPB;
     private boolean shot;

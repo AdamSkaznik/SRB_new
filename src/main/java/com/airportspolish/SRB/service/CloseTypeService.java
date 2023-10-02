@@ -13,4 +13,5 @@ public interface CloseTypeService {
     List<CloseType> getAll();
     CloseType findById(Integer id);
     CloseType save(CloseType closeType);
+    List<CloseType> search(String closeTypeName);
 }

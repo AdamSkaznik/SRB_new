@@ -32,7 +32,7 @@ public class Instructions {
     private String createdBy;
     private  boolean instructionsActive;
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date instructionsDate;
     @ManyToOne(fetch = FetchType.EAGER, optional = true)

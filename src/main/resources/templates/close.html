@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+
+<div class="container">
+	<form th:action="@{/saveClose}" th:object="${event}" method="post">
+		<div class="controls">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Zakończenie interwencji</div>
+				<div class="panel-body">
+					<div class="col-sm">
+						<label> Wybierz sposób zakończenia </label>
+						<select class="form-control" style="width: 540px" id="close" required></select>
+						<input type="text" id="tempCloseTypeId" hidden>
+						<input type="text" id="tempEventIdToClose" hidden>
+					</div>
+					<p>
+						<label> Zaangażowane służb zewnętrznych:
+							<input type="checkbox" name="involvedServices"
+								   th:each="involved : ${allInvolved}"
+								   th:text="${involved.involvedName}"
+								   th:value="${involved.involvedId}"
+								   th:field="*{involvedServices}"
+							/>
+							<br>
+						</label>
+					</p>
+				</div>
+				<div class="col-sm">
+					<label>Zaangażowanie służb medycznych</label>
+
+				</div>
+				<div class="col-sm">
+					<input type="checkbox"> Czy użyto ŚPB?
+				</div>
+				<div class="col-sm" id = "spbUse" hidden>
+					<p>
+						<label> Użyte ŚPB:
+							<input type="checkbox" name="spbs"
+								   th:each="spb : ${allSpb}"
+								   th:text="${spb.spbName}"
+								   th:value="${spb.spbId}"
+								   th:field="*{spbs}"
+							/>
+							<br>
+						</label>
+					</p>
+				</div>
+				<p>
+					<label> Podjęte czynności:
+						<input type="checkbox" name="spbs"
+							   th:each="spb : ${allSpb}"
+							   th:text="${spb.spbName}"
+							   th:value="${spb.spbId}"
+							   th:field="*{spbs}"
+						/>
+						<br>
+					</label>
+				</p>
+			</div>
+			<div class="uk-margin uk-align-right">
+				<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i>
+				</button>
+			</div>
+		</div>
+
+	</form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+        $("#close").select2({
+            language: "pl",
+            // minimumInputLength: 3,
+            placeholder: "Wybierz ...",
+            theme: 'bootstrap4',
+            selectionCssClass: 'form-control',
+            ajax: {
+                url: "/api/closeType/search/v1",
+                dataType: 'json',
+                type: 'GET',
+                data: function (params) {
+                    console.log(params)
+                    return {
+                        term: params.term,
+                        page: params.page || 1,
+                    }
+                },
+                processResults(data) {
+                    console.log(data)
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.closeTypeName,
+                                id: item.id,
+                            }
+                        })
+                    }
+                }
+
+            }
+        })
+    });
+
+    $("#close").on('change', function () {
+        $("#tempCloseTypeId").val($(this).val());
+    });
+
+
+
+</script>

@@ -164,7 +164,7 @@
 					<form class="form" id="patrol1">
 						<div class="controls">
 							<div class="panel panel-primary">
-								<div class="panel-heading">Skieruj patrol do obłsugi </div>
+								<div class="panel-heading">Skieruj patrol do obsługi </div>
 								<div class="panel-body">
 									<div class="col-sm">
 										<label> Wybierz patrol </label>
@@ -297,7 +297,7 @@
 	</div>
 	<!--	modal add patrol end-->
 
-	<!--	modal add start-->
+	<!--	modal add close event-->
 	<div class="modal fade" id="close_events">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -312,23 +312,34 @@
 								<div class="panel-heading">Wprowadź dane, żeby zakończyć interwencję</div>
 								<div class="panel-body">
 									<div class="col-sm">
+										<label> Wybierz sposób zakończenia </label>
+										<select class="form-control" style="width: 540px" id="close2" required></select>
+										<input type="text" id="tempCloseTypeId" hidden>
+										<input type="text" id="tempEventIdToClose" hidden>
+									</div>
+									<div class="col-sm">
+										<label>Zaangażowanie służb zewnętrznych</label>
+
+									</div>
+"
+									<div class="col-sm">
 										<label> Użyte ŚPB</label>
-										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Policja">
-											<label class="form-check-label" for="inlineCheckbox1">Siła fizyczna</label>
-										</div>
-										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Straż Graniczna">
-											<label class="form-check-label" for="inlineCheckbox2">Pałka służbowa</label>
-										</div>
-										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Służba Celno-Skarbowa">
-											<label class="form-check-label" for="inlineCheckbox3">RMG</label>
-										</div>
-										<div class="form-check form-check-inline">
-											<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Inne">
-											<label class="form-check-label" for="inlineCheckbox3">Paralizator elektryczny</label>
-										</div>
+<!--										<div class="form-check form-check-inline">-->
+<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Policja">-->
+<!--											<label class="form-check-label" for="inlineCheckbox1">Siła fizyczna</label>-->
+<!--										</div>-->
+<!--										<div class="form-check form-check-inline">-->
+<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Straż Graniczna">-->
+<!--											<label class="form-check-label" for="inlineCheckbox2">Pałka służbowa</label>-->
+<!--										</div>-->
+<!--										<div class="form-check form-check-inline">-->
+<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Służba Celno-Skarbowa">-->
+<!--											<label class="form-check-label" for="inlineCheckbox3">RMG</label>-->
+<!--										</div>-->
+<!--										<div class="form-check form-check-inline">-->
+<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Inne">-->
+<!--											<label class="form-check-label" for="inlineCheckbox3">Paralizator elektryczny</label>-->
+<!--										</div>-->
 <!--										<select style="width: 540px" class="form-control" id="category" required></select>-->
 										<!--										<input type="text" id="categoryId">-->
 									</div>
@@ -338,11 +349,11 @@
 											<textarea class="form-control" id="close1" rows="5"></textarea>
 											<!--										<select style="width: 540px"class="form-control" id="zone" required></select>-->
 										</div>
-										<div class="col-sm">
-											<label for="close2"> Czynności po użyciu ŚPB</label>
-											<textarea class="form-control" id="close2" rows="5"></textarea>
-											<!--										<select style="width: 540px"class="form-control" id="level" required></select>-->
-										</div>
+<!--										<div class="col-sm">-->
+<!--											<label for="close2"> Czynności po użyciu ŚPB</label>-->
+<!--											<textarea class="form-control" id="close2" rows="5"></textarea>-->
+<!--											&lt;!&ndash;										<select style="width: 540px"class="form-control" id="level" required></select>&ndash;&gt;-->
+<!--										</div>-->
 									</div>
 									<div class="col-sm">
 										<label > Podjęte czynności</label>
@@ -358,31 +369,31 @@
 <!--										<textarea class="form-control" id="close2" rows="5"></textarea>-->
 <!--&lt;!&ndash;										<select style="width: 540px"class="form-control" id="level" required></select>&ndash;&gt;-->
 <!--									</div>-->
-									<div class="col-sm">
-										<label for="close3"> Ogólny stan zdrowia</label>
-										<textarea class="form-control" id="close3" rows="5"></textarea>
-<!--										<input type="text" class="form-control" id="tempReporting" required>-->
-									</div>
-									<div class="col-sm">
-									<label for="close4">Czynności podjęte wspólnie z innymi służbami</label>
-									<textarea class="form-control" id="close4" rows="5" required></textarea>
-								</div>
-									<div class="col-sm">
-										<label for="close5"> Inne istotne informacje</label>
-										<textarea class="form-control" id="close5" rows="5" required></textarea>
-									</div>
-									<div class="col-sm">
-										<label for="close6"> pkt. 12</label>
-										<textarea class="form-control" id="close6" rows="5" required></textarea>
-									</div>
-									<div class="col-sm">
-										<label for="close7"> pkt.13</label>
-										<textarea class="form-control" id="close7" rows="5" required></textarea>
-									</div>
-									<div class="col-sm">
-										<label for="close8"> Dane osoby w stosunku do której podejmowano czynności</label>
-										<textarea class="form-control" id="close8" rows="5" required></textarea>
-									</div>
+<!--									<div class="col-sm">-->
+<!--										<label for="close3"> Ogólny stan zdrowia</label>-->
+<!--										<textarea class="form-control" id="close3" rows="5"></textarea>-->
+<!--&lt;!&ndash;										<input type="text" class="form-control" id="tempReporting" required>&ndash;&gt;-->
+<!--									</div>-->
+<!--									<div class="col-sm">-->
+<!--									<label for="close4">Czynności podjęte wspólnie z innymi służbami</label>-->
+<!--									<textarea class="form-control" id="close4" rows="5" required></textarea>-->
+<!--								</div>-->
+<!--									<div class="col-sm">-->
+<!--										<label for="close5"> Inne istotne informacje</label>-->
+<!--										<textarea class="form-control" id="close5" rows="5" required></textarea>-->
+<!--									</div>-->
+<!--									<div class="col-sm">-->
+<!--										<label for="close6"> pkt. 12</label>-->
+<!--										<textarea class="form-control" id="close6" rows="5" required></textarea>-->
+<!--									</div>-->
+<!--									<div class="col-sm">-->
+<!--										<label for="close7"> pkt.13</label>-->
+<!--										<textarea class="form-control" id="close7" rows="5" required></textarea>-->
+<!--									</div>-->
+<!--									<div class="col-sm">-->
+<!--										<label for="close8"> Dane osoby w stosunku do której podejmowano czynności</label>-->
+<!--										<textarea class="form-control" id="close8" rows="5" required></textarea>-->
+<!--									</div>-->
 								</div>
 							</div>
 						</div>
@@ -394,9 +405,9 @@
 				</div>
 				<div class="modal-footer">
 					<div class="btn-group" role="group">
-						<button type="submit" class="btn btn-primary" id="addNew" style="border-radius: 15px"><i
-								class="glyphicon glyphicon-ok-circle"></i> Zapisz
-						</button>
+<!--						<button type="submit" class="btn btn-primary" id="addNew" style="border-radius: 15px"><i-->
+<!--								class="glyphicon glyphicon-ok-circle"></i> Zapisz-->
+<!--						</button>-->
 						<div class="col-sm-1"></div>
 						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px">
 							<i class="glyphicon glyphicon-remove-circle"></i> Zamknij
@@ -408,7 +419,27 @@
 	</div>
 	<!--	modal add end-->
 
+<!--	modal new record-->
+	<div class="modal fade" id="modalNewRecord" tabindex="-1" role="dialog" aria-labelledby="modalNewRecordLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modalNewRecordLabel"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<h3 style="color: red"> Masz nowe zdarzenie!</h3>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
+<!--	<input type="text" id="newRecordTemp" >-->
 </div>
 
 
@@ -604,7 +635,43 @@
         $("#tempPatrolId").val($(this).val());
     });
 
-
+    // $(function () {
+    //     $("#close2").select2({
+    //         language: "pl",
+    //         // minimumInputLength: 3,
+    //         placeholder: "Wybierz ...",
+    //         theme: 'bootstrap4',
+    //         selectionCssClass: 'form-control',
+    //         ajax: {
+    //             url: "/api/closeType/search/v1",
+    //             dataType: 'json',
+    //             type: 'GET',
+    //             data: function (params) {
+    //                 console.log(params)
+    //                 return {
+    //                     term: params.term,
+    //                     page: params.page || 1,
+    //                 }
+    //             },
+    //             processResults(data) {
+    //                 console.log(data)
+    //                 return {
+    //                     results: $.map(data, function (item) {
+    //                         return {
+    //                             text: item.closeTypeName,
+    //                             id: item.id,
+    //                         }
+    //                     })
+    //                 }
+    //             }
+	//
+    //         }
+    //     })
+    // });
+	//
+    // $("#close2").on('change', function () {
+    //     $("#tempCloseTypeId").val($(this).val());
+    // });
 
     $(document).ready(function () {
         var table1 = $('#events').DataTable({
@@ -761,6 +828,12 @@
             console.log("ID : " + data.id);
             window.location = '/details/'+data["id"];
         })
+        $('#events tbody').on('click', '#close', function (){
+            let data = table1.row($(this).parents('tr')).data();
+           let eventId = data["id"];
+           $('#tempEventIdToClose').val(eventId);
+            $('#close_events').modal('show');
+        })
 
 
         table1.on('order.dt search.dt', function () {
@@ -797,7 +870,8 @@
                 toastr.success("Dodano nowe wydarzanie");
                 window.setTimeout(function(){
 					$("#add_events").modal("hide");
-					location.reload()},1000)
+					location.reload()},1000);
+                // $('#modalNewRecord').modal('show');
 			},
 			error: function () {
                 toastr.error("Wystąpił błąd podczas zapisu.");
@@ -869,4 +943,10 @@ $(document).delegate('#addNewInstructions', 'click', function (){
 		}
 	});
 });
+
+if('#newRecordTemp' == true){
+    $('#modalNewRecord').modal('show');
+} else {
+    $('#modalNewRecord').modal('hide');
+}
 </script>
