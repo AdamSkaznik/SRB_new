@@ -830,9 +830,10 @@
         })
         $('#events tbody').on('click', '#close', function (){
             let data = table1.row($(this).parents('tr')).data();
-           let eventId = data["id"];
-           $('#tempEventIdToClose').val(eventId);
-            $('#close_events').modal('show');
+           // let eventId = data["id"];
+           // $('#tempEventIdToClose').val(eventId);
+            // $('#close_events').modal('show');
+			window.location = '/close/'+data["id"];
         })
 
 

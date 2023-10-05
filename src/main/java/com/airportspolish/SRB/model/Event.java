@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+//model dla interwencji
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -54,6 +55,8 @@ public class Event {
     private boolean useSPB;
     private boolean shot;
     private boolean messages;
+//    private boolean medicalInside;
+//    private boolean medicalOutside;
     private String stepsBeforeUseSPB;
     private String stepsAfterUseSPB;
     private String health;

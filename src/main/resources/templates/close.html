@@ -10,51 +10,66 @@
 	<meta charset="utf-8">
 </head>
 <body>
-
-<div class="container">
-	<form th:action="@{/saveClose}" th:object="${event}" method="post">
+<div class="container" style="margin-top: 60px">
 		<div class="controls">
+			<form th:action="@{/saveClose}" th:object="${event}" method="post">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Zakończenie interwencji</div>
 				<div class="panel-body">
 					<div class="col-sm">
 						<label> Wybierz sposób zakończenia </label>
-						<select class="form-control" style="width: 540px" id="close" required></select>
+						<select class="form-control" id="close" required></select>
 						<input type="text" id="tempCloseTypeId" hidden>
 						<input type="text" id="tempEventIdToClose" hidden>
 					</div>
-					<p>
-						<label> Zaangażowane służb zewnętrznych:
-							<input type="checkbox" name="involvedServices"
-								   th:each="involved : ${allInvolved}"
-								   th:text="${involved.involvedName}"
-								   th:value="${involved.involvedId}"
+					<br>
+					<div class="form-group">
+<!--						<label for=""> Zaangażowanie służb zewnętrznych</label>-->
+						<div class="form-check form-control">
+							<label for=""> Zaangażowanie służb zewnętrznych &nbsp;&nbsp;</label>
+							<input class="form-check-label" type="checkbox" name="allInvolved"
+								   th:each="in : ${allInvolved}"
+								   th:text="${in.involvedName}"
+								   th:value="${in.involvedId}"
 								   th:field="*{involvedServices}"
 							/>
-							<br>
-						</label>
-					</p>
-				</div>
-				<div class="col-sm">
-					<label>Zaangażowanie służb medycznych</label>
-
+						</div>
+					</div>
+				<div class="form-group">
+					<div class="form-check form-control">
+						<label>Zaangażowanie służb medycznych</label>
+						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="Wewnętrznych">
+						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="Zewnętrznych">
+					</div>
 				</div>
 				<div class="col-sm">
 					<input type="checkbox"> Czy użyto ŚPB?
 				</div>
-				<div class="col-sm" id = "spbUse" hidden>
-					<p>
-						<label> Użyte ŚPB:
-							<input type="checkbox" name="spbs"
-								   th:each="spb : ${allSpb}"
+					<div class="form-group" id = "spbUse">
+
+						<div class="form-check form-control">
+							<label for=""> Użyte ŚPB: &nbsp;&nbsp;</label>
+							<input type="checkbox" name="spbs" style="margin: 10px 0px 15px 0px"
+								   th:each="spb : ${spbs}"
 								   th:text="${spb.spbName}"
 								   th:value="${spb.spbId}"
 								   th:field="*{spbs}"
 							/>
-							<br>
-						</label>
-					</p>
-				</div>
+						</div>
+					</div>
+<!--				<div class="col-sm" id = "spbUse">-->
+<!--					<p>-->
+<!--						<label> Użyte ŚPB:-->
+<!--							<input type="checkbox" name="spbs" style="margin-left: 5px; margin-inside: 10px"-->
+<!--								   th:each="spb : ${spbs}"-->
+<!--								   th:text="${spb.spbName}"-->
+<!--								   th:value="${spb.spbId}"-->
+<!--								   th:field="*{spbs}"-->
+<!--							/>-->
+<!--							<br>-->
+<!--						</label>-->
+<!--					</p>-->
+<!--				</div>-->
 				<p>
 					<label> Podjęte czynności:
 						<input type="checkbox" name="spbs"
@@ -66,14 +81,14 @@
 						<br>
 					</label>
 				</p>
+				</div>
 			</div>
 			<div class="uk-margin uk-align-right">
 				<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i>
 				</button>
 			</div>
+			</form>
 		</div>
-
-	</form>
 </div>
 </body>
 </html>

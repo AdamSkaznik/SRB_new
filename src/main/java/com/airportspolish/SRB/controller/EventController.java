@@ -51,6 +51,8 @@ public class EventController {
     InvolvedServicesServiceImpl involvedServicesServiceImpl;
     @Autowired
     HistoryServiceImpl historyServiceImpl;
+    @Autowired
+    SpbServiceImpl spbServiceImpl;
 
 @PostMapping("/api/saveEvent")
     public ResponseEntity<Void> saveEvent(@RequestBody Temp temp, Principal principal){
@@ -257,5 +259,17 @@ public String details(@PathVariable Long id, Model model){
     model.addAttribute("instructions", instructions);
 //    model.addAttribute("allInvolved", allInvolved);
     return "/details";
+}
+
+@GetMapping("/close/{id}")
+    public String close(@PathVariable Long id, Model model){
+    Event event = eventServiceImpl.getById(id);
+    List<InvolvedServices> allInvolved = involvedServicesServiceImpl.getAll();
+    System.out.println("AllInvolved : " + allInvolved);
+    List<Spb> spbs = spbServiceImpl.getAll();
+    model.addAttribute("event", event);
+    model.addAttribute("allInvolved", allInvolved);
+    model.addAttribute("spbs", spbs);
+    return "/close";
 }
 }

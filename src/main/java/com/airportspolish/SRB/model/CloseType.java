@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+//model dla typów zamknięcia
 @Entity
 @Getter
 @Setter
