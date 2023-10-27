@@ -17,17 +17,6 @@
 	<script src="/uikit/js/uikit.js"></script>
 </head>
 <body>
-<!--<style>-->
-<!--    .blue-row {-->
-<!--        background-color: blue !important;-->
-<!--        color: white;-->
-<!--    }-->
-
-<!--    .red-row {-->
-<!--        background-color: red !important;-->
-<!--        color: white;-->
-<!--    }-->
-<!--</style>-->
 
 <div class="container-fluid">
 
@@ -324,24 +313,7 @@
 "
 									<div class="col-sm">
 										<label> Użyte ŚPB</label>
-<!--										<div class="form-check form-check-inline">-->
-<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Policja">-->
-<!--											<label class="form-check-label" for="inlineCheckbox1">Siła fizyczna</label>-->
-<!--										</div>-->
-<!--										<div class="form-check form-check-inline">-->
-<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Straż Graniczna">-->
-<!--											<label class="form-check-label" for="inlineCheckbox2">Pałka służbowa</label>-->
-<!--										</div>-->
-<!--										<div class="form-check form-check-inline">-->
-<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Służba Celno-Skarbowa">-->
-<!--											<label class="form-check-label" for="inlineCheckbox3">RMG</label>-->
-<!--										</div>-->
-<!--										<div class="form-check form-check-inline">-->
-<!--											<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Inne">-->
-<!--											<label class="form-check-label" for="inlineCheckbox3">Paralizator elektryczny</label>-->
-<!--										</div>-->
-<!--										<select style="width: 540px" class="form-control" id="category" required></select>-->
-										<!--										<input type="text" id="categoryId">-->
+
 									</div>
 									<div class="col-sm-12" id="spbrequired">
 										<div class="col-sm">
@@ -349,51 +321,13 @@
 											<textarea class="form-control" id="close1" rows="5"></textarea>
 											<!--										<select style="width: 540px"class="form-control" id="zone" required></select>-->
 										</div>
-<!--										<div class="col-sm">-->
-<!--											<label for="close2"> Czynności po użyciu ŚPB</label>-->
-<!--											<textarea class="form-control" id="close2" rows="5"></textarea>-->
-<!--											&lt;!&ndash;										<select style="width: 540px"class="form-control" id="level" required></select>&ndash;&gt;-->
-<!--										</div>-->
+
 									</div>
 									<div class="col-sm">
 										<label > Podjęte czynności</label>
-<!--										<select style="width: 540px"class="form-control" id="place" required></select>-->
+
 									</div>
-<!--									<div class="col-sm">-->
-<!--										<label for="close1"> Czynności przed użyciem ŚPB</label>-->
-<!--										<textarea class="form-control" id="close1" rows="5"></textarea>-->
-<!--&lt;!&ndash;										<select style="width: 540px"class="form-control" id="zone" required></select>&ndash;&gt;-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close2"> Czynności po użyciu ŚPB</label>-->
-<!--										<textarea class="form-control" id="close2" rows="5"></textarea>-->
-<!--&lt;!&ndash;										<select style="width: 540px"class="form-control" id="level" required></select>&ndash;&gt;-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close3"> Ogólny stan zdrowia</label>-->
-<!--										<textarea class="form-control" id="close3" rows="5"></textarea>-->
-<!--&lt;!&ndash;										<input type="text" class="form-control" id="tempReporting" required>&ndash;&gt;-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--									<label for="close4">Czynności podjęte wspólnie z innymi służbami</label>-->
-<!--									<textarea class="form-control" id="close4" rows="5" required></textarea>-->
-<!--								</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close5"> Inne istotne informacje</label>-->
-<!--										<textarea class="form-control" id="close5" rows="5" required></textarea>-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close6"> pkt. 12</label>-->
-<!--										<textarea class="form-control" id="close6" rows="5" required></textarea>-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close7"> pkt.13</label>-->
-<!--										<textarea class="form-control" id="close7" rows="5" required></textarea>-->
-<!--									</div>-->
-<!--									<div class="col-sm">-->
-<!--										<label for="close8"> Dane osoby w stosunku do której podejmowano czynności</label>-->
-<!--										<textarea class="form-control" id="close8" rows="5" required></textarea>-->
-<!--									</div>-->
+
 								</div>
 							</div>
 						</div>
@@ -830,10 +764,12 @@
         })
         $('#events tbody').on('click', '#close', function (){
             let data = table1.row($(this).parents('tr')).data();
-           // let eventId = data["id"];
-           // $('#tempEventIdToClose').val(eventId);
-            // $('#close_events').modal('show');
-			window.location = '/close/'+data["id"];
+          if(confirm("Chcesz zakończyć interwencję ?")){
+              window.location = '/close/'+data["id"];
+		  } else {
+             window.location = 'redirect:/index';
+		  }
+
         })
 
 

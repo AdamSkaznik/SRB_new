@@ -53,6 +53,8 @@ public class EventController {
     HistoryServiceImpl historyServiceImpl;
     @Autowired
     SpbServiceImpl spbServiceImpl;
+    @Autowired
+    ActionTakenServiceImpl actionTakenServiceImpl;
 
 @PostMapping("/api/saveEvent")
     public ResponseEntity<Void> saveEvent(@RequestBody Temp temp, Principal principal){
@@ -118,40 +120,22 @@ public class EventController {
 }
 
 @PostMapping("/api/saveEventAddPatrol")
-    public ResponseEntity<Void> saveEventAddPatrol(@RequestBody Temp temp, Event event, Principal principal){
+    public ResponseEntity<Void> saveEventAddPatrol(@RequestBody Temp temp, Principal principal){
     System.out.println("Przekazane dane : " + temp.getTempEventId()+"; " + temp.getTempPatrolId());
     Patrol patrol = patrolServiceImpl.getById(temp.getTempPatrolId());
     EventStatus eventStatus = eventStatusServiceImpl.getById(2);
     try {
+        Event event = eventServiceImpl.getById(temp.getTempEventId());
+        System.out.println("Event : " + event.getId());
+        event.setPatrol(patrol);
+        event.setEventStatus(eventStatus);
+        Date date = new Date();
+        event.setPatrolSent(date);
+        eventServiceImpl.saveEvent(event);
         History history = new History();
         history.setHistoryDesc("Dodano do obsługi patrol przez : " + principal.getName());
         history.setEvent(event);
         historyServiceImpl.saveHistory(history);
-        Event event1 = eventServiceImpl.getById(temp.getTempEventId());
-        event.setId(event1.getId());
-        event.setCreatedBy(event1.getCreatedBy());
-        event.setEventDesc(event1.getEventDesc());
-        event.setEventNr(event1.getEventNr());
-        event.setEventSystemNr(event1.getEventSystemNr());
-        event.setReporting(event1.getReporting());
-        event.setReportingDate(event1.getReportingDate());
-        event.setYear(event1.getYear());
-        event.setEventType(event1.getEventType());
-        event.setLevel(event1.getLevel());
-        event.setPlace(event1.getPlace());
-        event.setZone(event1.getZone());
-        event.setPatrol(patrol);
-        event.setEventStatus(eventStatus);
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-//        LocalDateTime now = LocalDateTime.now();
-        Date date = new Date();
-        event.setPatrolSent(date);
-        eventServiceImpl.saveEvent(event);
-//        History history = new History();
-//        history.setHistoryDesc("Dodano do obsługi patrol przez : " + principal.getName());
-//        history.setEvent(event);
-//        historyServiceImpl.saveHistory(history);
-//        eventServiceImpl.updatePatrol(Long.valueOf(patrol.getPatrolId()), eventStatus.getEventStatusId(), temp.getTempEventId());
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
         e.printStackTrace();
@@ -160,26 +144,26 @@ public class EventController {
 }
 
 @PostMapping("/api/saveWork/{id}")
-public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal, Event event){
+public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal){
     try {
-        Event event1 = eventServiceImpl.getById(id);
+        Event event = eventServiceImpl.getById(id);
         System.out.println("Przekazane id : " + id);
         EventStatus eventStatus = eventStatusServiceImpl.getById(3);
-        event.setId(event1.getId());
-        event.setCreatedBy(event1.getCreatedBy());
-        event.setEventDesc(event1.getEventDesc());
-        event.setEventNr(event1.getEventNr());
-        event.setEventSystemNr(event1.getEventSystemNr());
-        event.setReporting(event1.getReporting());
-        event.setReportingDate(event1.getReportingDate());
-        event.setYear(event1.getYear());
-        event.setEventType(event1.getEventType());
-        event.setLevel(event1.getLevel());
-        event.setPlace(event1.getPlace());
-        event.setZone(event1.getZone());
-        event.setPatrol(event1.getPatrol());
-        event.setEventStatus(event1.getEventStatus());
-        event.setPatrol(event1.getPatrol());
+//        event.setId(event1.getId());
+//        event.setCreatedBy(event1.getCreatedBy());
+//        event.setEventDesc(event1.getEventDesc());
+//        event.setEventNr(event1.getEventNr());
+//        event.setEventSystemNr(event1.getEventSystemNr());
+//        event.setReporting(event1.getReporting());
+//        event.setReportingDate(event1.getReportingDate());
+//        event.setYear(event1.getYear());
+//        event.setEventType(event1.getEventType());
+//        event.setLevel(event1.getLevel());
+//        event.setPlace(event1.getPlace());
+//        event.setZone(event1.getZone());
+//        event.setPatrol(event1.getPatrol());
+//        event.setEventStatus(event1.getEventStatus());
+//        event.setPatrol(event1.getPatrol());
         event.setEventStatus(eventStatus);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         Date date = new Date();
@@ -196,23 +180,23 @@ public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal,
     }
 }
 @PostMapping("/api/saveIntervention/{id}")
-    public ResponseEntity<Void> saveIntervention(@PathVariable Long id, Event event, Principal principal){
+    public ResponseEntity<Void> saveIntervention(@PathVariable Long id, Principal principal){
     EventStatus eventStatus = eventStatusServiceImpl.getById(3);
     try {
-        Event event1 = eventServiceImpl.getById(id);
-        event.setId(event1.getId());
-        event.setCreatedBy(event1.getCreatedBy());
-        event.setEventDesc(event1.getEventDesc());
-        event.setEventNr(event1.getEventNr());
-        event.setEventSystemNr(event1.getEventSystemNr());
-        event.setReporting(event1.getReporting());
-        event.setReportingDate(event1.getReportingDate());
-        event.setYear(event1.getYear());
-        event.setEventType(event1.getEventType());
-        event.setLevel(event1.getLevel());
-        event.setPlace(event1.getPlace());
-        event.setZone(event1.getZone());
-        event.setPatrol(event1.getPatrol());
+        Event event = eventServiceImpl.getById(id);
+//        event.setId(event1.getId());
+//        event.setCreatedBy(event1.getCreatedBy());
+//        event.setEventDesc(event1.getEventDesc());
+//        event.setEventNr(event1.getEventNr());
+//        event.setEventSystemNr(event1.getEventSystemNr());
+//        event.setReporting(event1.getReporting());
+//        event.setReportingDate(event1.getReportingDate());
+//        event.setYear(event1.getYear());
+//        event.setEventType(event1.getEventType());
+//        event.setLevel(event1.getLevel());
+//        event.setPlace(event1.getPlace());
+//        event.setZone(event1.getZone());
+//        event.setPatrol(event1.getPatrol());
         event.setEventStatus(eventStatus);
         eventServiceImpl.saveEvent(event);
         return new ResponseEntity<Void>(HttpStatus.OK);
@@ -267,9 +251,12 @@ public String details(@PathVariable Long id, Model model){
     List<InvolvedServices> allInvolved = involvedServicesServiceImpl.getAll();
     System.out.println("AllInvolved : " + allInvolved);
     List<Spb> spbs = spbServiceImpl.getAll();
+    List<ActionsTaken> takenList = actionTakenServiceImpl.getAll();
     model.addAttribute("event", event);
     model.addAttribute("allInvolved", allInvolved);
     model.addAttribute("spbs", spbs);
+    model.addAttribute("takenList", takenList);
+
     return "/close";
 }
 }

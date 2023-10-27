@@ -38,49 +38,42 @@
 				<div class="form-group">
 					<div class="form-check form-control">
 						<label>Zaangażowanie służb medycznych</label>
-						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="Wewnętrznych">
-						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="Zewnętrznych">
+						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="'&nbsp'+ Wewnętrznych">
+						<input type="checkbox" style="margin-left: 5px; margin-inside: 10px" th:text="'&nbsp'+Zewnętrznych">
 					</div>
 				</div>
 				<div class="col-sm">
-					<input type="checkbox"> Czy użyto ŚPB?
+					<input type="checkbox" id="useSpb"> Czy użyto ŚPB?
 				</div>
-					<div class="form-group" id = "spbUse">
+<!--					blok z użyciem SPB-->
+					<div style="display: none" id="spbUse">
+					<div class="form-group">
 
-						<div class="form-check form-control">
+						<div class="form-check form-control" style="font-weight: bold">
 							<label for=""> Użyte ŚPB: &nbsp;&nbsp;</label>
-							<input type="checkbox" name="spbs" style="margin: 10px 0px 15px 0px"
+							<input type="checkbox" name="spbs" style="margin-left: 10px"
 								   th:each="spb : ${spbs}"
-								   th:text="${spb.spbName}"
+								   th:text="'&nbsp;&nbsp' + ${spb.spbName}"
 								   th:value="${spb.spbId}"
 								   th:field="*{spbs}"
 							/>
 						</div>
 					</div>
-<!--				<div class="col-sm" id = "spbUse">-->
-<!--					<p>-->
-<!--						<label> Użyte ŚPB:-->
-<!--							<input type="checkbox" name="spbs" style="margin-left: 5px; margin-inside: 10px"-->
-<!--								   th:each="spb : ${spbs}"-->
-<!--								   th:text="${spb.spbName}"-->
-<!--								   th:value="${spb.spbId}"-->
-<!--								   th:field="*{spbs}"-->
-<!--							/>-->
-<!--							<br>-->
-<!--						</label>-->
-<!--					</p>-->
-<!--				</div>-->
-				<p>
-					<label> Podjęte czynności:
-						<input type="checkbox" name="spbs"
-							   th:each="spb : ${allSpb}"
-							   th:text="${spb.spbName}"
-							   th:value="${spb.spbId}"
-							   th:field="*{spbs}"
-						/>
-						<br>
-					</label>
-				</p>
+
+
+					</div>
+<!--					koniec bloku z użyciem SPB-->
+<!--				<p>-->
+<!--					<label> Podjęte czynności:-->
+<!--						<input type="checkbox" name="spbs"-->
+<!--							   th:each="spb : ${allSpb}"-->
+<!--							   th:text="${spb.spbName}"-->
+<!--							   th:value="${spb.spbId}"-->
+<!--							   th:field="*{spbs}"-->
+<!--						/>-->
+<!--						<br>-->
+<!--					</label>-->
+<!--				</p>-->
 				</div>
 			</div>
 			<div class="uk-margin uk-align-right">
@@ -130,6 +123,12 @@
     $("#close").on('change', function () {
         $("#tempCloseTypeId").val($(this).val());
     });
+
+$(document).ready(function (){
+ $('#useSpb').change(function (){
+     $('#spbUse').toggle();
+ });
+});
 
 
 

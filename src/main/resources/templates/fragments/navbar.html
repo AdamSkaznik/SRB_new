@@ -63,7 +63,7 @@
 			<li><a href="#" th:href="@{#}" style="color: #0c0c0c"><span
 					class="glyphicon glyphicon-briefcase" style="color: #0c0c0c"></span> Zarządzanie - manager</a></li>
 		</ul>
-		<!--        <ul class="nav navbar-nav navbar-right" sec:authentication="principal.authorities">-->
+
 		<ul class="nav navbar-nav" sec:authorize="hasAuthority('ADMIN')">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toogle" data-toggle="dropdown" role="button" aria-haspopup="tree"
@@ -107,13 +107,7 @@
 					<li class="divider"></li>
 					<li><a href="/admin/logi" th:href="@{/admin/logi}" style="color: #0c0c0c"><span
 							class="glyphicon glyphicon-list-alt"></span> Logi</a></li>
-<!--					<li><a href="/administracja/productCategory" th:href="@{/administracja/productCategory}"-->
-<!--						   style="color: #0c0c0c"><span class="glyphicon glyphicon-tag"></span> Kategorie sprzętu</a>-->
-<!--					</li>-->
-<!--					<li><a href="/administracja/trustmentType" th:href="@{/administracja/trustment}"-->
-<!--						   style="color: #0c0c0c"><span class="glyphicon glyphicon-bookmark"></span> Własność</a></li>-->
-<!--					<li><a href="/administracja/status" th:href="@{/administracja/status}" style="color: #0c0c0c"><span-->
-<!--							class="glyphicon glyphicon-bookmark"></span> Statusy produktów</a></li>-->
+
 					<li class="divider"></li>
 					<li><a href="/admin/users" th:href="@{/admin/users}" style="color: #0c0c0c"><span
 							class="glyphicon glyphicon-knight"></span> Użytkownicy</a></li>
@@ -124,10 +118,6 @@
 			</li>
 		</ul>
 
-<!--		<ul class="nav navbar-nav" sec:authorize="isAuthenticated()">-->
-<!--			<li><a href="/inventory/pdf/instrukcja.pdf" id="pdf" onclick="window.open('/inventory/pdf/instrukcja.pdf', '_blank', 'fullscren=yes'); return false" style="color: #2b542c"><span class="glyphicon glyphicon-picture"></span> Instrukcja</a>-->
-<!--				&lt;!&ndash;                    class="glyphicon glyphicon-user" style="color: red"></span> Twoje konto</a></li>&ndash;&gt;-->
-<!--		</ul>-->
 
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="#" th:href="@{/logout}" style="color: #0c0c0c; margin-right: 20px"><span class="glyphicon glyphicon-log-out"
