@@ -54,6 +54,11 @@ public class EventServiceImpl implements EventService {
         eventRepository.updateWork(id);
     }
 
+    @Override
+    public int getNewCount() {
+        return eventRepository.newCount();
+    }
+
 //    @Override
 //    public void deleteEvent(Long id) {
 //        eventRepository.delete(id);

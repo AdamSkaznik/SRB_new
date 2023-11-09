@@ -19,14 +19,13 @@
 <body>
 
 <div class="container-fluid">
-
 	<div class="col-sm">
 		<div>
 			<br>
 		</div>
 
 		<br>
-
+		<input th:value="${session.countNew}" id="countNew" hidden>
 		<table>
 			<tr>
 				<p><a href="#" class="btn btn-success" id="newEvents"><span class="glyphicon glyphicon-plus"></span> Nowa interwencja</a></p>
@@ -74,6 +73,26 @@
 
 		</table>
 	</div>
+<!--	modal details start-->
+	<div class="modal fade" id="details_modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Szczegóły zgłoszenia <i class="fa fa-exclamation-circle"
+																	style="color: blue"></i></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center">
+					<div id="modalDetailsBody"></div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij</button>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--	modal details end-->
 	<!--	modal add start-->
 	<div class="modal fade" id="add_events">
 		<div class="modal-dialog">
@@ -351,27 +370,27 @@
 			</div>
 		</div>
 	</div>
-	<!--	modal add end-->
+	<!--	modal add close event end-->
 
 <!--	modal new record-->
-	<div class="modal fade" id="modalNewRecord" tabindex="-1" role="dialog" aria-labelledby="modalNewRecordLabel" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="modalNewRecordLabel"></h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<h3 style="color: red"> Masz nowe zdarzenie!</h3>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-				</div>
-			</div>
-		</div>
-	</div>
+<!--	<div class="modal fade" id="modalNewRecord" tabindex="-1" role="dialog" aria-labelledby="modalNewRecordLabel" aria-hidden="true">-->
+<!--		<div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--			<div class="modal-content">-->
+<!--				<div class="modal-header">-->
+<!--					<h5 class="modal-title" id="modalNewRecordLabel"></h5>-->
+<!--					<button type="button" class="close" data-dismiss="modal" aria-label="Zamknij">-->
+<!--						<span aria-hidden="true">&times;</span>-->
+<!--					</button>-->
+<!--				</div>-->
+<!--				<div class="modal-body">-->
+<!--					<h3 style="color: red"> Masz nowe zdarzenie!</h3>-->
+<!--				</div>-->
+<!--				<div class="modal-footer">-->
+<!--					<button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</div>-->
 
 <!--	<input type="text" id="newRecordTemp" >-->
 </div>
@@ -608,6 +627,18 @@
     // });
 
     $(document).ready(function () {
+        // $(document).ready(function (){
+            let time = new Date().getTime();
+            $(document.body).bind("mousemove keypress", function (e) {
+                time = new Date().getTime();
+            });
+            function refresh() {
+                if(new Date().getTime() - time >= 60000){
+                    window.location.reload(true);
+                }
+                else {setTimeout(refresh, 10000);
+                }}
+            setTimeout(refresh, 10000);
         var table1 = $('#events').DataTable({
             // "sDom":"<'row'<'col text-center'B>>"+"<'row'<'col-xs-6 col-sm-6'>>"+"<'row'<'col-xs-6 col-sm-6'l><'col-xs-6 col-sm-6'tf>>"+"<'row'<'col-xs-6 col-sm-6'tr>>"+"<'row'<'col-xs-5 col-sm-5'i><'col-xs-7 col-sm-7'p>>",
             "sDom": "<'row'<'col text-center'B>>" + "<'row'<'col-sm-6'>>" + "<'row'<'col-sm-8'l><'col-sm-4'tf>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -761,6 +792,9 @@
             let data = table1.row($(this).parents('tr')).data();
             console.log("ID : " + data.id);
             window.location = '/details/'+data["id"];
+            // var data = table.row($(this).parents('tr')).data();
+            // $('#details_modal').modal();
+            // show_details('/details/'+data["id"]);
         })
         $('#events tbody').on('click', '#close', function (){
             let data = table1.row($(this).parents('tr')).data();
@@ -885,5 +919,15 @@ if('#newRecordTemp' == true){
     $('#modalNewRecord').modal('show');
 } else {
     $('#modalNewRecord').modal('hide');
+}
+    function show_details(url){
+        $('#modalDetailsBody').load(url, function(){});
+    }
+let count = $('#countNew').val();
+if (count != 0) {
+swal("Nowa interwencja", "Odnotowano nową interwencję", "info");
+    const sound = new Audio();
+    sound.src='../sound/nowe.mp3';
+    sound.play();
 }
 </script>

@@ -5,8 +5,8 @@
 
 package com.airportspolish.SRB.controller;
 
-import com.airportspolish.SRB.model.Temp;
 import com.airportspolish.SRB.service.UserService;
+import com.airportspolish.SRB.service.impl.EventServiceImpl;
 import com.airportspolish.SRB.service.impl.LogiServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 @Controller
@@ -23,6 +24,8 @@ public class LoginController {
     UserService userService;
     @Autowired
     LogiServiceImpl logiServiceImpl;
+    @Autowired
+    EventServiceImpl eventServiceImpl;
 
     @GetMapping(value = {"/", "/login"})
     public ModelAndView login(Principal principal) {
@@ -73,8 +76,11 @@ public class LoginController {
 //    }
 
     @GetMapping("/index")
-    public String goHome(Principal principal, Temp temp){
-//        System.out.println("ZALOGOWANOOOO 111111");
+    public String goHome(HttpSession httpSession){
+        int countNew = eventServiceImpl.getNewCount();
+        if(countNew != 0){
+            httpSession.setAttribute("countNew", countNew);
+        }
         return "/index";
     }
 

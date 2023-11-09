@@ -17,4 +17,5 @@ public interface EventService {
     void updatePatrol(Long patrolId, Integer eventStatusId, Long id);
     void updateWork(Long id);
 //    void deleteEvent(Long id);
+    int getNewCount();
 }

@@ -31,4 +31,8 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     String update_work = "UPDATE events SET event_status_id = '3' WHERE id =?1";
     @Query(value = update_work, nativeQuery = true)
     Event updateWork(Long id);
+
+    String zapCount = "select count(*) from events where event_status_id = 1 and reporting_date < current_timestamp";
+    @Query(value = zapCount, nativeQuery = true)
+    int newCount();
 }
