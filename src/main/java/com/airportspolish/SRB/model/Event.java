@@ -32,34 +32,45 @@ public class Event {
     private Long id;
     private int eventNr;
     private String eventSystemNr;
+//    kto zgłasza
     private String reporting;
-//    private String eventDesc;
+    // data i czas wprowadzenia
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date reportingDate;
-//    @Modifying
+//   Data i czas wysłania patrolu
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date patrolSent;
+    // Data i czas podjęcia interwencji
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date intervention;
+    // Data i czas zkończenia interwencji
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endIntervention;
-
+        // rok (dla celów statystycznych)
     @DateTimeFormat(pattern = "yyyy")
     private String year;
+    // opis interwencji
     private String eventDesc;
+    // czy użyto SPB
     private boolean useSPB;
+    // czy strzelano
     private boolean shot;
+    // czy wysłano komunikat
     private boolean messages;
 //    private boolean medicalInside;
 //    private boolean medicalOutside;
+    // kroki przed użyciem SPB
     private String stepsBeforeUseSPB;
+    // kroki po użyciu SPB
     private String stepsAfterUseSPB;
+    // opis zdrowie
     private String health;
+    // czynności wykonywano z :
     private String activitiesWith;
     private String otherRelevantInformation;
     private String activitiesRelationSPB;

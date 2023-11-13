@@ -1,0 +1,180 @@
+<!--
+  ~ Copyright (c) 2023. Adam Skaźnik for SOL PPL Chopin Airport
+  ~ All rights reserved.
+  -->
+
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	  th:replace="~{fragments/layout::layout(~{::.container})}">
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+
+<div class="container">
+	<br><br>
+	<div style="display: none" id="msg">
+		<span></span>
+	</div>
+	<p><a href="#" class="btn btn-danger" id="add_involved"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Dodaj służbę</a></p>
+	<div class="row">
+		<center><h2>Wykaz służb współpracujących</h2></center>
+	</div>
+	<br>
+	<div class="row">
+		<table id="involvedService" class="table table-bordered table-striped" style="width: 100%">
+			<thead>
+			<tr>
+				<th>Lp.</th>
+				<th>Nazwa służby</th>
+				<th>Dodatkowy opis</th>
+				<th>Akcje</th>
+			</tr>
+			</thead>
+		</table>
+
+	</div>
+	<!--	start modal add-->
+	<div class="modal fade" id="involvedAdd">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Dodanie nowej służby <i class="glyphicon glyphicon-exclamation-sign"
+																	  style="color: blue"></i></h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="modal-body justify-content-center">
+					<form class="form" action="@{/api/admin/saveInvolvedService}" method="post" th:object="${involvedServices}">
+						<div class="controls">
+							<div class="panel panel-primary">
+								<div class="panel-heading"></div>
+								<div class="panel-body">
+									<div class="col-sm">
+										<label>Nazwa służby</label>
+										<input type="text" class="form-control" id="involvedName">
+									</div>
+									<div class="col-sm">
+										<label>Dodatkowy opis</label>
+										<!--									<input type="text" class="form-control" id="levelName">-->
+										<textarea class="form-control rounded-0" id="involvedDesc" rows="5"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<div class="btn-group" role="group">
+						<button type="submit" class="btn btn-primary" id="addNewInvolved" style="border-radius: 15px"><i class="glyphicon glyphicon-plus"></i> Zapisz </button>
+						<div class="col-sm-1"></div>
+						<button type="button" class="btn btn-warning" data-dismiss="modal" style="border-radius: 15px"><i class="glyphicon glyphicon-remove"></i> Zamknij</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--	end modal add-->
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#involvedService').DataTable({
+            "sAjaxSource" : "/api/involvedService/v1",
+            "sAjaxDataProp": "",
+            "aoColumns": [
+                {"mData": null,
+                    "render" : function (data, type, full, meta) {
+                        return meta.index +1;
+                    }},
+
+                { "mData": "involvedName"},
+                { "mData": "involvedDesc" },
+                {"mData": null,
+                    "orderable" : false,
+                    "width": "100px",
+                    "render": function () {
+                        return '<button id="edytuj" class="btn btn-success btn-circle" title="Edycja" ><i class="glyphicon glyphicon-pencil"></i></button>&nbsp;<button id="usun" class="btn btn-danger" title="Usuń"><i class="glyphicon glyphicon-remove"></i></button>';
+                    }}
+            ],
+            "language": {
+                "processing": "Przetwarzanie...",
+                "search": "Szukaj:",
+                "lengthMenu": "Pokaż _MENU_ pozycji",
+                "info": "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                "infoFiltered": "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix": "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords": "Nie znaleziono pasujących pozycji",
+                "emptyTable": "Nie znaleziono rekordów",
+                "paginate": {
+                    "first": "Pierwsza",
+                    "previous": "Poprzednia",
+                    "next": "Następna",
+                    "last": "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            }
+        })
+
+        $('#involvedService tbody').on('click', '#edytuj', function () {
+            var data = table.row($(this).parents('tr')).data();
+
+        })
+        $('#involvedService tbody').on('click', '#usun', function () {
+            var data = table.row($(this).parents('tr')).data();
+            if (confirm("Potwierdź usunięcie")){
+                window.location = '/admin/deleteInvolvedService/'+data["id"];
+            } else {
+                window.location = '/admin/level';
+            }
+        })
+
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+        $('#add_involved').on('click', function (){
+            $('#involvedAdd').modal('show');
+        });
+
+
+        $(document).delegate('#addNewInvolved', 'click', function (){
+            let involvedService = {
+                involvedName : $('#involvedName').val(),
+                involvedDesc : $('#involvedDesc').val()
+            };
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/admin/saveInvolvedService",
+                data: JSON.stringify(involvedService),
+                dataType: "json",
+                success: function (savedInvolved) {
+                    toastr.success("Dodano służbę: " + savedInvolved.involvedName + " " + savedInvolved.involvedDesc);
+                    window.setTimeout(function () {
+                        $("#involvedAdd").modal("hide");
+                        location.reload()
+                    }, 1000)
+
+
+                },
+                error: function () {
+                    // alert("Wystąpił błąd podczas zapisu.");
+                    toastr.error("Wystąpił błąd podczas zapisu.");
+                }
+
+            })
+
+        });
+
+
+    })
+
+
+</script>
