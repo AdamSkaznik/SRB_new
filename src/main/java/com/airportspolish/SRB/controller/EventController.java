@@ -8,6 +8,8 @@ package com.airportspolish.SRB.controller;
 import com.airportspolish.SRB.model.*;
 import com.airportspolish.SRB.service.UserService;
 import com.airportspolish.SRB.service.impl.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class EventController {
+    public static final Logger logger = LoggerFactory.getLogger(EventController.class);
     @Autowired
     EventServiceImpl eventServiceImpl;
     @Autowired
@@ -55,18 +58,33 @@ public class EventController {
     SpbServiceImpl spbServiceImpl;
     @Autowired
     ActionTakenServiceImpl actionTakenServiceImpl;
+    @Autowired
+    MedicalServicesServiceImpl medicalServicesServiceImpl;
 
 @PostMapping("/api/saveEvent")
     public ResponseEntity<Void> saveEvent(@RequestBody Temp temp, Principal principal){
     System.out.println("Przekazane dane : " + temp.getTempReporting() + "; " + temp.getTempDesc() + "; " + temp.getTempZoneId() + "; " + temp.getTempLevelId()+"; " + temp.getTempPlaceId());
     Long id1 = temp.getTempZoneId();
+    if(id1 == null){
+        id1 = 1L;
+    }
     Long id2 = temp.getTempCategoryId();
+    if (id2 == null){
+        id2 = 1L;
+    }
     Long id3 = temp.getTempPlaceId();
+    if (id3 == null){
+        id3 = 1L;
+    }
     Long id4 = temp.getTempLevelId();
+    if (id4 == null){
+        id4 = 1L;
+    }
     Zone zone = zoneServiceImpl.getById(id1);
     boolean tempNewRecord = false;
     System.out.println("Zone : " + zone.getZoneId() + "; " + zone.getZoneName());
     EventType eventType = eventTypeServiceImpl.getById(id2);
+
     System.out.println("Event Type :" + eventType.getEventTypeId() + "; " + eventType.getEventTypeName());
     Place place = placeServiceImpl.getById(id3);
     System.out.println("Place : " + place.getPlaceId() + "; " + place.getPlaceName());
@@ -115,6 +133,7 @@ public class EventController {
 
     } catch (Exception e) {
         e.printStackTrace();
+        logger.error("Błąd podczas zapisu nowej interwencji. " + e);
     }
     return new ResponseEntity<Void>(HttpStatus.OK);
 }
@@ -139,6 +158,7 @@ public class EventController {
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
         e.printStackTrace();
+        logger.error("Błąd podczas dodawania patrolu: " + e);
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
@@ -149,21 +169,6 @@ public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal)
         Event event = eventServiceImpl.getById(id);
         System.out.println("Przekazane id : " + id);
         EventStatus eventStatus = eventStatusServiceImpl.getById(3);
-//        event.setId(event1.getId());
-//        event.setCreatedBy(event1.getCreatedBy());
-//        event.setEventDesc(event1.getEventDesc());
-//        event.setEventNr(event1.getEventNr());
-//        event.setEventSystemNr(event1.getEventSystemNr());
-//        event.setReporting(event1.getReporting());
-//        event.setReportingDate(event1.getReportingDate());
-//        event.setYear(event1.getYear());
-//        event.setEventType(event1.getEventType());
-//        event.setLevel(event1.getLevel());
-//        event.setPlace(event1.getPlace());
-//        event.setZone(event1.getZone());
-//        event.setPatrol(event1.getPatrol());
-//        event.setEventStatus(event1.getEventStatus());
-//        event.setPatrol(event1.getPatrol());
         event.setEventStatus(eventStatus);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         Date date = new Date();
@@ -176,6 +181,7 @@ public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal)
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
         e.printStackTrace();
+        logger.error("Błąd podczas rozpoczęcia interwencji: " + e);
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
@@ -184,25 +190,12 @@ public ResponseEntity<Void> saveWork(@PathVariable Long id, Principal principal)
     EventStatus eventStatus = eventStatusServiceImpl.getById(3);
     try {
         Event event = eventServiceImpl.getById(id);
-//        event.setId(event1.getId());
-//        event.setCreatedBy(event1.getCreatedBy());
-//        event.setEventDesc(event1.getEventDesc());
-//        event.setEventNr(event1.getEventNr());
-//        event.setEventSystemNr(event1.getEventSystemNr());
-//        event.setReporting(event1.getReporting());
-//        event.setReportingDate(event1.getReportingDate());
-//        event.setYear(event1.getYear());
-//        event.setEventType(event1.getEventType());
-//        event.setLevel(event1.getLevel());
-//        event.setPlace(event1.getPlace());
-//        event.setZone(event1.getZone());
-//        event.setPatrol(event1.getPatrol());
         event.setEventStatus(eventStatus);
         eventServiceImpl.saveEvent(event);
         return new ResponseEntity<Void>(HttpStatus.OK);
     } catch (Exception e) {
         e.printStackTrace();
-
+        logger.error("Błąd: " + e);
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
@@ -223,6 +216,7 @@ public ResponseEntity<Void> saveNewInstructions(@RequestBody Temp temp, Principa
         historyServiceImpl.saveHistory(history);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }catch (Exception e) {
+        logger.error("Błąd podczas zapisu instrukcji do interwencji: " + e);
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 }
@@ -234,14 +228,18 @@ public String details(@PathVariable Long id, Model model){
     Level level = levelServiceImpl.getById(event.getLevel().getLevelId());
     Zone zone = zoneServiceImpl.getById(event.getZone().getZoneId());
     List<InvolvedServices> allInvolved = involvedServicesServiceImpl.getAll();
+    List<MedicalServices> allMedical = medicalServicesServiceImpl.getAll();
     List<Instructions> instructions = instructionsServiceImpl.getByEventId(id);
+    List<Spb> spbList = spbServiceImpl.getAll();
     model.addAttribute("event", event);
     model.addAttribute("eventType", eventType);
     model.addAttribute("place", place);
     model.addAttribute("level", level);
     model.addAttribute("zone", zone);
     model.addAttribute("instructions", instructions);
-//    model.addAttribute("allInvolved", allInvolved);
+    model.addAttribute("allInvolved", allInvolved);
+    model.addAttribute("allMedical", allMedical);
+    model.addAttribute("spbList", spbList);
     return "/details";
 }
 
@@ -249,14 +247,17 @@ public String details(@PathVariable Long id, Model model){
     public String close(@PathVariable Long id, Model model){
     Event event = eventServiceImpl.getById(id);
     List<InvolvedServices> allInvolved = involvedServicesServiceImpl.getAll();
+    List<MedicalServices> allMedical = medicalServicesServiceImpl.getAll();
     System.out.println("AllInvolved : " + allInvolved);
+    System.out.println("**********************************");
+    System.out.println("Medical services : " + allMedical);
     List<Spb> spbs = spbServiceImpl.getAll();
     List<ActionsTaken> takenList = actionTakenServiceImpl.getAll();
     model.addAttribute("event", event);
     model.addAttribute("allInvolved", allInvolved);
     model.addAttribute("spbs", spbs);
     model.addAttribute("takenList", takenList);
-
+    model.addAttribute("allMedical", allMedical);
     return "/close";
 }
 }

@@ -16,84 +16,15 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Dane podstawowe</div>
 				<div class="panel-body">
-<!--					<div class="col-sm">-->
-<!--						<label>Wybierz nazwę sprzętu* <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Słownikowa nazwa sprzętu.&#10;Pole obowiązkowe"></i></label>-->
-<!--						<select class="form-control col-sm-8" id="product1" required></select>-->
-<!--						<input th:field="*{products.productId}" id="productName" hidden>-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<label>Wybierz nazwę dyspozytorni* <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Słownikowa nazwa dyspozytorni.&#10;Pole obowiązkowe"></i></label>-->
-<!--						<select class="form-control col-sm-8" id="branch" required></select>-->
-<!--						<input th:field="*{branch.branchId}" id="branchId" hidden>-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<br>-->
-<!--					</div>-->
-<!--					<div class="panel panel-default">-->
-<!--						<div class="panel-heading">Możesz wybrać dany pokój lub pracownika (dane nieobowiązkowe)</div>-->
-<!--						<div class="panel-body">-->
-<!--							<div class="col-sm-6">-->
-<!--								<label>Wybierz pokój do którego przekazano sprzęt</label>-->
-<!--								<select class="form-control" id="branchRoom"></select>-->
-<!--								<input th:field="*{branchRoom.roomId}" id="branchRoomId" hidden>-->
-<!--							</div>-->
-<!--							<div class="col-sm-6">-->
-<!--								<label>Wybierz pracownika któremu chcesz przypisać sprzęt</label>-->
-<!--								<select class="form-control" id="employee"></select>-->
-<!--								<input th:field="*{employee.employeeId}" id="employeeId" hidden>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<label>Wybierz formę własności* <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Słownikowa wartość formy własności np: mienie własne, mienie powierzone.&#10;Pole obowiązkowe"></i></label>-->
-<!--						<select class="form-control" id="trustment" required></select>-->
-<!--						<input th:field="*{trustment.trustmentId}" id="trustmentId" hidden>-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<br>-->
-<!--					</div>-->
+
 					<div class="col-sm-4">
 						<label>Kto zgłasza interwencję* <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Pole obowiązkowe"></i></label>
 						<input type="text" class="form-control" th:field="*{reporting}" th:value="1" value="1" name="reporting" required>
 					</div>
-<!--					<div class="col-sm-4">-->
-<!--						<label>Wartość *</label>-->
-<!--						<input type="number" min="1" step="any" class="form-control" th:field="*{productPrice}"  required>-->
-<!--					</div>-->
-<!--					<div class="col-sm-4">-->
-<!--						<label>Nr inwentarzowy</label>-->
-<!--						<input type="text" class="form-control" th:field="*{serialInvoice}" placeholder="Wprowadź nr inwentarzowy">-->
-<!--					</div>-->
+
 				</div>
 			</div>
-<!--			<div class="panel panel-info">-->
-<!--				<div class="panel-heading">Dodatkowe informacje dot.sprzętu <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Informacje, które nie są wymagane ale warto je wprowadzić&#10;W tym panelu wprowadzisz m.in nr seryjny czy też datę końca gwarancji.&#10;Pola nie są obowiązkowe"></i></div>-->
-<!--				<div class="panel-body">-->
-<!--					<div class="col-sm-3">-->
-<!--						<label>Nr seryjny</label>-->
-<!--						<input type="text" class="form-control" th:field="*{serialNr}" placeholder="Wprowadź nr seryjny">-->
-<!--					</div>-->
-<!--					<div class="col-sm-3">-->
-<!--						<label>Producent</label>-->
-<!--						<input type="text" class="form-control" th:field="*{producer}" placeholder="Wpisz nazwę producenta">-->
-<!--					</div>-->
-<!--					<div class="col-sm-3">-->
-<!--						<label>Data zakupu <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Data zakupu/dostarczenia towaru&#10;Domyślnie - data dzisiejsza"></i></label>-->
-<!--						<input type="text" class="form-control" id="data1" name="data1" th:field="*{articlePurchase}">-->
-<!--					</div>-->
-<!--					<div class="col-sm-3">-->
-<!--						<label>Data końca gwarancji <i class="glyphicon glyphicon-question-sign" aria-hidden="true" style="color:blue" title="Wartość domyślna obliczana jest od dnia dzisiejszego&#10;System dodaje 2 lata od dnia dzisiejszego"></i></label>-->
-<!--						<input type="text" class="form-control" id="data2" name="data2" th:field="*{guarantiePeriod}">-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<input type="text" th:field="*{status.statusId}" name="statusId" value="2" th:value="2" hidden>-->
-<!--					</div>-->
-<!--					<div class="col-sm">-->
-<!--						<label>Dodatkowe informacje</label>-->
-<!--						<textarea th:field="*{productsDesc}" type="text" class="form-control" rows="2"></textarea>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
+
 
 			<div class="uk-margin uk-align-right">
 				<button type="submit" id="save" class="btn btn-primary"><i class="glyphicon glyphicon-ok"> Zapisz</i> </button>

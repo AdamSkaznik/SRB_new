@@ -51,6 +51,8 @@ public class AppRestController {
     InstructionsServiceImpl instructionsService;
     @Autowired
     CloseTypeServiceImpl closeTypeServiceImpl;
+    @Autowired
+    MedicalServicesServiceImpl medicalServicesServiceImpl;
 
 
     @RequestMapping(path = "/events/v1", method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
@@ -232,6 +234,17 @@ public class AppRestController {
             return new ResponseEntity<List<Instructions>>(instructionsService.getByEventId(eventId), HttpStatus.OK);
         } catch (Exception e) {
             logger.error("Błąd podczas pobierania poszukiwania danych z API /instructions/v1" + e);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(path = "/medicalService/v1",method = RequestMethod.GET, produces = MimeTypeUtils.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MedicalServices>> medicalAll(){
+        try {
+            return new ResponseEntity<List<MedicalServices>>(medicalServicesServiceImpl.getAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Błąd podczas pobierania danych z API /medicalService/v1" + e);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

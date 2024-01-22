@@ -45,64 +45,91 @@ public class AdminRestController {
     SpbServiceImpl spbServiceImpl;
    @Autowired
    CloseTypeServiceImpl closeTypeServiceImpl;
+   @Autowired
+   MedicalServicesServiceImpl medicalServicesServiceImpl;
 
     @PostMapping("/api/admin/saveLevel")
     public @ResponseBody Level saveLevel(@RequestBody Level level, Principal principal) {
-        level.setLevelActive(true);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy poziom o nazwie : " + level.getLevelName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            level.setLevelActive(true);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy poziom o nazwie : " + level.getLevelName());
+            logiServiceImpl.saveLog(logi);
+        }catch (Exception e) {
+            logger.error("Błąd podczas zapisu poziomu przez Admina przez RestApi: " + e);
+        }
+
         return levelRepository.save(level);
     }
 
     @PostMapping("/api/admin/saveEventStatus")
     public @ResponseBody
     EventStatus eventStatus(@RequestBody EventStatus eventStatus, Principal principal) {
-        eventStatus.setEventStatusActive(true);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy status wydarzenia nazwie : " + eventStatus.getEventStatusName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            eventStatus.setEventStatusActive(true);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy status wydarzenia nazwie : " + eventStatus.getEventStatusName());
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e) {
+            logger.error("Błąd podczas zapisu statusu w RestApi przez Admina: " + e);
+        }
+
         return eventStatusServiceImpl.saveStatusEvent(eventStatus);
     }
 
     @PostMapping("/api/admin/saveEventType")
     public @ResponseBody EventType eventType(@RequestBody EventType eventType, Principal principal){
-        eventType.setEventTypeActive(true);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy typ wydarzenia o nazwie : " + eventType.getEventTypeName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            eventType.setEventTypeActive(true);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy typ wydarzenia o nazwie : " + eventType.getEventTypeName());
+            logiServiceImpl.saveLog(logi);
+        }catch (Exception e) {
+            logger.error("Błąd podczas zapisu typu w RestApi przez Admina: " + e);
+        }
+
         return eventTypeServiceImpl.saveEventType(eventType);
     }
     @PostMapping("/api/admin/savePatrol")
     public @ResponseBody
     Patrol patrol(@RequestBody Patrol patrol, Principal principal){
-        patrol.setPatrolActive(true);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy patrol o nazwie : " + patrol.getPatrolName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            patrol.setPatrolActive(true);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy patrol o nazwie : " + patrol.getPatrolName());
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e) {
+            logger.error("Błąd podczas zapisu patrolu w RestApi przez Admina: " + e);
+        }
+
         return patrolServiceImpl.savePatrol(patrol);
     }
 
     @PostMapping("/api/admin/savePatrolStatus")
     public @ResponseBody
     PatrolStatus patrolStatus(@RequestBody PatrolStatus patrolStatus, Principal principal) {
-        patrolStatus.setPatrolStatusActive(true);
-        patrolStatus.setPatrolStatusName(patrolStatus.getPatrolStatusName());
-        patrolStatus.setPatrolStatusDesc(patrolStatus.getPatrolStatusDesc());
-        System.out.println("Patrol status : " + patrolStatus.getPatrolStatusName() + " " + patrolStatus.getPatrolStatusDesc());
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy status patrolu o nazwie : " + patrolStatus.getPatrolStatusName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            patrolStatus.setPatrolStatusActive(true);
+            patrolStatus.setPatrolStatusName(patrolStatus.getPatrolStatusName());
+            patrolStatus.setPatrolStatusDesc(patrolStatus.getPatrolStatusDesc());
+            System.out.println("Patrol status : " + patrolStatus.getPatrolStatusName() + " " + patrolStatus.getPatrolStatusDesc());
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy status patrolu o nazwie : " + patrolStatus.getPatrolStatusName());
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e) {
+            logger.error("Błąd podczas zapisu statusu patrolu w RestApi przez Admina: " + e);
+        }
+
         return patrolStatusServiceImpl.savePatrolStatus(patrolStatus);
     }
 
@@ -119,14 +146,19 @@ public class AdminRestController {
     @PostMapping("/api/admin/saveInvolved")
     public @ResponseBody
     InvolvedServices involvedServices(@RequestBody InvolvedServices involvedServices, Principal principal){
-      involvedServices.setInvolvedName(involvedServices.getInvolvedName());
-      involvedServices.setInvolvedDesc(involvedServices.getInvolvedDesc());
-      involvedServices.setInvolvedActive(true);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nową służbę wspomagjącą  : " + involvedServices.getInvolvedName());
-        logiServiceImpl.saveLog(logi);
+        try {
+            involvedServices.setInvolvedName(involvedServices.getInvolvedName());
+            involvedServices.setInvolvedDesc(involvedServices.getInvolvedDesc());
+            involvedServices.setInvolvedActive(true);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nową służbę wspomagającą  : " + involvedServices.getInvolvedName());
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e){
+            logger.error("Błąd podczas dodawania służby wspomagającej w RestApi przez Admina: " + e);
+        }
+
         return involvedServicesServiceImpl.save(involvedServices);
     }
 
@@ -165,8 +197,6 @@ public class AdminRestController {
     @PostMapping("/api/admin/saveCloseType")
     public @ResponseBody
     CloseType closeType(@RequestBody CloseType closeType, Principal principal){
-//        wayOfEnding.setWayOfEndingName(wayOfEnding.getWayOfEndingName());
-//        wayOfEnding.setWayOfEndingDesc(wayOfEnding.getWayOfEndingDesc());
         closeType.setCloseTypeName(closeType.getCloseTypeName());
         closeType.setCloseTypeDesc(closeType.getCloseTypeDesc());
         closeType.setActive(true);
@@ -176,5 +206,19 @@ public class AdminRestController {
         logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nowy sposób zakończenia : " + closeType.getCloseTypeName());
         logiServiceImpl.saveLog(logi);
         return closeTypeServiceImpl.save(closeType);
+    }
+
+    @PostMapping("/api/admin/saveMedical")
+    public @ResponseBody
+    MedicalServices medicalServices(@RequestBody MedicalServices medicalServices, Principal principal){
+        medicalServices.setMedicalServicesName(medicalServices.getMedicalServicesName());
+        medicalServices.setMedicalServicesDesc(medicalServices.getMedicalServicesDesc());
+        medicalServices.setMedicalServicesActive(true);
+        int who = userService.findUserByUserName(principal.getName()).getId();
+        Logi logi = new Logi();
+        logi.setUserId(who);
+        logi.setLogsDesc("Administrator : " + principal.getName() + " dodał nową służbę medyczną : " + medicalServices.getMedicalServicesName());
+        logiServiceImpl.saveLog(logi);
+        return medicalServicesServiceImpl.save(medicalServices);
     }
 }

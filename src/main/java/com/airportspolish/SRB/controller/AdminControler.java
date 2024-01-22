@@ -58,12 +58,16 @@ public class AdminControler {
     @PostMapping("/admin/saveLevel")
     public String saveLevel(Level level, Principal principal){
         level.setLevelActive(true);
-      levelServiceImpl.save(level);
-      int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
-        logiServiceImpl.saveLog(logi);
+        try {
+            levelServiceImpl.save(level);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e){
+          logger.error("Błąd podczas zapisu poziomu przez Admina: " + e);
+        }
         return "redirect:/index";
     }
     @GetMapping("/admin/place")
@@ -82,17 +86,17 @@ public class AdminControler {
     @PostMapping("/admin/saveEventStatus")
     public String saveEvenetStatus(EventStatus eventStatus, Principal principal) {
         eventStatus.setEventStatusActive(true);
-//        boolean end = eventStatus.ge;
-//        if (end === null){
-//            end = false;
-//        }
-//        eventStatus.setEventStatusSequence(end);
-        eventStatusServiceImpl.saveStatusEvent(eventStatus);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
-        logiServiceImpl.saveLog(logi);
+        try {
+            eventStatusServiceImpl.saveStatusEvent(eventStatus);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e) {
+            logger.error("Błąd podczas zapisu nowego statusu przez Admina: " + e);
+        }
+
         return "redirect:/admin/eventStatus";
     }
 
@@ -104,13 +108,18 @@ public class AdminControler {
 
     @PostMapping("/admin/savePlace")
     public String savePlace(Place place, Principal principal){
-        place.setPlaceActive(true);
-        placeServiceImpl.savePlace(place);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
-        logiServiceImpl.saveLog(logi);
+        try {
+            place.setPlaceActive(true);
+            placeServiceImpl.savePlace(place);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc(principal.getName() + " dodał nowy poziom");
+            logiServiceImpl.saveLog(logi);
+        }catch (Exception e) {
+            logger.error("Błąd podczas zapisu Place przez Admina: " + e);
+        }
+
         return "redirect:/index";
     }
     @GetMapping("/admin/zone")
@@ -125,13 +134,18 @@ public class AdminControler {
     }
     @PostMapping("/admin/saveZone")
     public String saveZone(Zone zone, Principal principal) {
-        zone.setZoneActive(true);
-        zoneServiceImpl.saveZone(zone);
-        int who = userService.findUserByUserName(principal.getName()).getId();
-        Logi logi = new Logi();
-        logi.setUserId(who);
-        logi.setLogsDesc(principal.getName() + " dodał nową strefę");
-        logiServiceImpl.saveLog(logi);
+        try {
+            zone.setZoneActive(true);
+            zoneServiceImpl.saveZone(zone);
+            int who = userService.findUserByUserName(principal.getName()).getId();
+            Logi logi = new Logi();
+            logi.setUserId(who);
+            logi.setLogsDesc(principal.getName() + " dodał nową strefę");
+            logiServiceImpl.saveLog(logi);
+        } catch (Exception e){
+            logger.error("Błąd podczas zapisu Zone przez Admina: " + e);
+        }
+
         return "redirect:/index";
     }
 
@@ -178,11 +192,13 @@ public class AdminControler {
 
     @GetMapping("/admin/addUser")
     public ModelAndView newUser() {
-    User user = new User();
-    ModelAndView mav = new ModelAndView();
-        mav.addObject("user", user);
-    List<Role> roles = roleRepository.findAll();
-        mav.addObject("allRoles", roles);
+
+            User user = new User();
+            ModelAndView mav = new ModelAndView();
+            mav.addObject("user", user);
+            List<Role> roles = roleRepository.findAll();
+            mav.addObject("allRoles", roles);
+
         return mav;
     }
     @GetMapping("/admin/editUser/{id}")
@@ -209,4 +225,7 @@ public class AdminControler {
 
     @GetMapping("/admin/closeType")
     public String zakanczanie(){return "/admin/closeType";}
+
+    @GetMapping("/admin/MedicalService")
+    public String medical() {return "/admin/MedicalService";}
 }

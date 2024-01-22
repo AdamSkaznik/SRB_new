@@ -304,7 +304,6 @@
 		</div>
 	</div>
 	<!--	modal add patrol end-->
-
 	<!--	modal add close event-->
 	<div class="modal fade" id="close_events">
 		<div class="modal-dialog">
@@ -325,14 +324,39 @@
 										<input type="text" id="tempCloseTypeId" hidden>
 										<input type="text" id="tempEventIdToClose" hidden>
 									</div>
-									<div class="col-sm">
-										<label>Zaangażowanie służb zewnętrznych</label>
+									<div class="col-sm" id="checked">
+									<div class="custom-control custom-checked">
+										<input type="checkbox" class="custom-control-input" id="chck1" name="chck1">
+										<label class="custom-control-input" for="chck1"> Czy były angażowane służby zewnętrzne ? (zaznacz jeśli TAK)</label>
+									</div>
+										<div class="custom-control custom-checked">
+											<input type="checkbox" class="custom-control-input" id="chck2" name="chck2">
+											<label class="custom-control-input" for="chck2"> Czy były angażowane służby medyczne ? (zaznacz jeśli TAK)</label>
+										</div>
+										<div class="custom-control custom-checked">
+											<input type="checkbox" class="custom-control-input" id="chck3" name="chck3">
+											<label class="custom-control-input" for="chck3"> Czy użyto SPB ? (zaznacz jeśli TAK)</label>
+										</div>
 
 									</div>
+									<div class="col-sm" id="spb" hidden>
+
+
+
+
+
+									</div>
+									<div class="col-sm" id="sluzby" hidden>
+										<div class="col-sm">
+											<label>Zaangażowanie służb zewnętrznych</label>
+
+										</div>
+
+									</div>
+
 "
 									<div class="col-sm">
 										<label> Użyte ŚPB</label>
-
 									</div>
 									<div class="col-sm-12" id="spbrequired">
 										<div class="col-sm">
@@ -798,11 +822,27 @@
         })
         $('#events tbody').on('click', '#close', function (){
             let data = table1.row($(this).parents('tr')).data();
-          if(confirm("Chcesz zakończyć interwencję ?")){
-              window.location = '/close/'+data["id"];
-		  } else {
-             window.location = 'redirect:/index';
-		  }
+            swal({
+				title: "Zakończenie",
+				text: "Chcesz zakończyć interwencję ?",
+				icon: "warning",
+				buttons: [
+                    'Nie',
+					'Tak-potwierdzam'
+				],
+				dangerMode: true
+			}).then(function (isConfirm){
+                if(isConfirm){
+                    window.location = '/close/'+data["id"];
+				} else {
+                    window.location = 'redirect:/index';
+				}
+			})
+          // if(confirm("Chcesz zakończyć interwencję ?")){
+          //     window.location = '/close/'+data["id"];
+		  // } else {
+          //    window.location = 'redirect:/index';
+		  // }
 
         })
 

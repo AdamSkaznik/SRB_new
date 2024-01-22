@@ -21,10 +21,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tab_role")
 public class Role {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int id;
-//    private String roleName;
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 @Column(name = "role_id")

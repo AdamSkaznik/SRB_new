@@ -19,7 +19,7 @@ import javax.persistence.*;
 public class MedicalServices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long medicalId;
     private String medicalServicesName;
     private String medicalServicesDesc;
     private boolean medicalServicesActive;

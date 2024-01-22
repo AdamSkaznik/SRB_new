@@ -44,19 +44,19 @@
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="modal-body justify-content-center">
-					<form class="form" action="@{/api/admin/saveMedicalService}" method="post" th:object="${medicalServices}">
+					<form class="form" method="post" th:object="${medicalServices}">
 						<div class="controls">
 							<div class="panel panel-primary">
 								<div class="panel-heading"></div>
 								<div class="panel-body">
 									<div class="col-sm">
 										<label>Nazwa służby</label>
-										<input type="text" class="form-control" id="medicalServiceName">
+										<input type="text" class="form-control" id="medicalServicesName">
 									</div>
 									<div class="col-sm">
 										<label>Dodatkowy opis</label>
 										<!--									<input type="text" class="form-control" id="levelName">-->
-										<textarea class="form-control rounded-0" id="medicalServiceDesc" rows="5"></textarea>
+										<textarea class="form-control rounded-0" id="medicalServicesDesc" rows="5"></textarea>
 									</div>
 								</div>
 							</div>
@@ -145,18 +145,19 @@
 
 
         $(document).delegate('#addNewMedical', 'click', function (){
-            let medicalService = {
-                medicalServiceName : $('#medicalServiceName').val(),
-                medicalServiceDesc : $('#medicalServiceDesc').val()
+            let medicalServices = {
+                medicalServicesName : $('#medicalServicesName').val(),
+                medicalServicesDesc : $('#medicalServicesDesc').val()
             };
+            console.log("Dane przekazane : " +medicalServices.medicalServicesName +";" + medicalServices.medicalServicesDesc);
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/api/admin/saveMedcialService",
-                data: JSON.stringify(medicalService),
+                url: "/api/admin/saveMedical",
+                data: JSON.stringify(medicalServices),
                 dataType: "json",
                 success: function (savedMedical) {
-                    toastr.success("Dodano służbę: " + savedMedical.medicalServiceName + " " + savedMedical.medicalServiceDesc);
+                    toastr.success("Dodano służbę: " + savedMedical.medicalServicesName + " " + savedMedical.medicalServicesDesc);
                     window.setTimeout(function () {
                         $("#medicalAdd").modal("hide");
                         location.reload()

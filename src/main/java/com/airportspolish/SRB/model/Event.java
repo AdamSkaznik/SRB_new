@@ -47,7 +47,7 @@ public class Event {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date intervention;
-    // Data i czas zkończenia interwencji
+    // Data i czas zakończenia interwencji
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endIntervention;
@@ -72,10 +72,16 @@ public class Event {
     private String health;
     // czynności wykonywano z :
     private String activitiesWith;
+    // inne informacje
     private String otherRelevantInformation;
+    // dodatkowe informacje o osobie/osobach
+    private String otherPersonInformation;
+
     private String activitiesRelationSPB;
     private String activities;
+    // czy zakończono
     private boolean isEnd;
+    //utworzone przez
     private String createdBy;
     @Transient
 //    @JsonIgnore
@@ -124,6 +130,10 @@ public class Event {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "eventInvolved", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "involved_id"))
     private Set<InvolvedServices> involvedServices = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "eventMedical", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "medical_id"))
+    private Set<MedicalServices> medicalServices = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "eventSpb", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "spb_id"))

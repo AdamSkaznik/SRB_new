@@ -56,46 +56,57 @@
 					   th:each="involved : ${allInvolved}"
 					   th:text="${involved.involvedName}"
 					   th:value="${involved.involvedId}"
-					   th:field="*{involved}">
+					   th:field="*{involvedServices}">
 				</td>
 			</tr>
 			<tr>
 				<td> ZAANGAŻOWANIE SŁUŻB MEDYCZNYCH</td>
 				<td colspan="3">
+					<input type="checkbox" name="medical"
+						   th:each="me : ${allMedical}"
+						   th:text="${me.medicalServicesName}"
+						   th:value="${me.medicalId}"
+						   th:field="*{medicalServices}">
 <!--					<input type="checkbox" th:value="">-->
 				</td>
 			</tr>
-			<tr>
-				<td> UŻYTE ŚPB</td>
-				<td colspan="3"></td>
-			</tr>
+<!--			<tr>-->
+<!--				<td> UŻYTE ŚPB</td>-->
+<!--				<td colspan="3">-->
+<!--					<input type="checkbox" name="spb"-->
+<!--						   th:each="usespb : ${sbplist}"-->
+<!--						   th:text="${usespb.spbName}"-->
+<!--						   th:value="${usespb.spbId}"-->
+<!--						   th:field="*{medicalServices}">-->
+<!--				</td>-->
+<!--			</tr>-->
 			<tr>
 				<td> PODJĘTE CZYNNOŚCI</td>
-				<td colspan="3"></td>
+				<td colspan="3" ></td>
 			</tr>
 			<tr>
 				<td> CZYNNOŚCI PRZED UŻYCIEM ŚPB</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.stepsBeforeUseSPB}"></td>
 			</tr>
 			<tr>
 				<td> CZYNNOŚCI PO UŻYCIU ŚPB</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.stepsAfterUseSPB}"></td>
 			</tr>
 			<tr>
 				<td> OGÓLNY STAN ZDROWIA</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.health}"></td>
 			</tr>
 			<tr>
 				<td> CZYNNOŚCI PODJĘTE WSPÓLNIE Z</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.activitiesWith}"></td>
 			</tr>
 			<tr>
 				<td> INNE ISTOTNE INFORMACJE</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.otherRelevantInformation}"></td>
 			</tr>
 			<tr>
 				<td> DANE OSOBY W STOSUNKU DO KTÓREJ PODEJMOWANO CZYNNOŚCI</td>
-				<td colspan="3"></td>
+				<td colspan="3" th:utext="${event.otherPersonInformation}"></td>
 			</tr>
 		</table>
 	</div>

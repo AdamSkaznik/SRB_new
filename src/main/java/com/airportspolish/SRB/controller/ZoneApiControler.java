@@ -10,6 +10,8 @@ import com.airportspolish.SRB.model.Zone;
 import com.airportspolish.SRB.service.UserService;
 import com.airportspolish.SRB.service.impl.LogiServiceImpl;
 import com.airportspolish.SRB.service.impl.ZoneServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ import java.security.Principal;
 
 @RestController
 public class ZoneApiControler {
+    private static final Logger logger = LoggerFactory.getLogger(ZoneApiControler.class);
     @Autowired
     ZoneServiceImpl zoneServiceImpl;
     @Autowired
