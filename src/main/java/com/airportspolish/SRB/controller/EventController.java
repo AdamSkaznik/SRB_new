@@ -260,4 +260,42 @@ public String details(@PathVariable Long id, Model model){
     model.addAttribute("allMedical", allMedical);
     return "/close";
 }
+
+@PostMapping("/saveClose")
+    public String saveClose(Model model, Event event, Temp temp, CloseType closeType){
+    try {
+        Event event1 = eventServiceImpl.getById(event.getId());
+        System.out.println("*************************************");
+        System.out.println("I'm hereeeeeee");
+        System.out.println("*************************************");
+        System.out.println("Zapis eventu: " + event1);
+        event1.setInvolvedServices(event.getInvolvedServices());
+        event1.setMedicalServices(event.getMedicalServices());
+        event1.setSpbs(event.getSpbs());
+        event1.setStepsBeforeUseSPB(event.getStepsBeforeUseSPB());
+        event1.setOtherPersonInformation(event.getOtherPersonInformation());
+        event1.setOtherRelevantInformation(event.getOtherRelevantInformation());
+        event1.setUseSPB(event.isUseSPB());
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        Date date = new Date();
+        event1.setEndIntervention(date);
+        System.out.print("******************************");
+        System.out.print("Przekazane closeTypeId: " + closeType.getCloseTypeId());
+        System.out.print("*******************************");
+//        CloseType closeType1 = closeTypeServiceImpl.findById(closeType.getCloseTypeId());
+//        CloseType closeType = closeTypeServiceImpl.findById(Math.toIntExact(event.closeType);
+//        event1.setCloseType(closeType1);
+        event1.setEnd(true);
+        EventStatus eventStatus = eventStatusServiceImpl.getById(4);
+        event1.setEventStatus(eventStatus);
+        eventServiceImpl.saveEvent(event1);
+        History history = new History();
+        history.setHistoryDesc("Zakończenie interwencji");
+        history.setEvent(event);
+        historyServiceImpl.saveHistory(history);
+    } catch (Exception e){
+        logger.error("Błąd podczas zapisu zakończenia interwencji: " + e);
+    }
+    return "redirect:/index";
+}
 }

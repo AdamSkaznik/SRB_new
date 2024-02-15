@@ -36,7 +36,7 @@ public class Temp {
     @Transient
     private boolean tempNewRecord;
     @Transient
-    private Long tempCloseTypeId;
+    private int tempCloseTypeId;
 
 
 

@@ -9,6 +9,8 @@ import com.airportspolish.SRB.model.Logi;
 import com.airportspolish.SRB.service.UserService;
 import com.airportspolish.SRB.service.impl.EventServiceImpl;
 import com.airportspolish.SRB.service.impl.LogiServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,7 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/")
 public class LoginController {
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
     @Autowired
     UserService userService;
     @Autowired
@@ -69,6 +72,7 @@ public class LoginController {
 
     @GetMapping("/index")
     public String goHome(HttpSession httpSession){
+        logger.error("test");
         int countNew = eventServiceImpl.getNewCount();
         System.out.println("Count: " + countNew);
         if(countNew != 0){

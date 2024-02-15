@@ -719,9 +719,9 @@
                 {
                     "mData": null,
                     "render": function () {
-                        // return '<a href="#"><span style="color: green" class="glyphicon glyphicon-share" title="Skieruj patrol" id="go"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: red" class="glyphicon glyphicon-screenshot" title="Podjęcie interwencji" id="work"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: red" class="glyphicon glyphicon-exclamation-sign" title="Wydaj dyspozycję" id="write"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: skyblue" class="glyphicon glyphicon-export" title="Przekaż innym służbom" id="share"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-off" title="Zamknij" id="close"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-list-alt" title="Wygeneruj notatkę" id="print"></span></a>';
-                        return '<a href="#"><span style="color: black" class="glyphicon glyphicon-share" title="Skieruj patrol" id="go"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-screenshot" title="Podjęcie interwencji" id="work"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-exclamation-sign" title="Wydaj dyspozycję" id="write"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-off" title="Zamknij" id="close"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-list-alt" title="Wygeneruj notatkę" id="print"></span></a>';
-                    }
+
+                            return '<a href="#"><span style="color: black" class="glyphicon glyphicon-share" title="Skieruj patrol" id="go"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-screenshot" title="Podjęcie interwencji" id="work"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-exclamation-sign" title="Wydaj dyspozycję" id="write"></span></a>&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-off" title="Zamknij" id="close"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#"><span style="color: black" class="glyphicon glyphicon-list-alt" title="Wygeneruj notatkę" id="print"></span></a>';
+                                            }
                 },
                 {
                     "mData": null,
@@ -754,6 +754,7 @@
                 } else
                 if(aData["eventStatus"].eventStatusId == '4'){
                     $('td', nRow).css('background-color','black');
+                    $('td', nRow).css('color', 'white');
                 }
                 return nRow;
             },

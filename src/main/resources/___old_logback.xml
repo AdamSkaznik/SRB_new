@@ -1,0 +1,112 @@
+
+<!--         Copyright (c) 2023. Adam Ska?nik for SOL PPL Chopin Airport-->
+<!--         All rights reserved.-->
+<!--        -->
+
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<configuration packagingData = "true">-->
+<!--    &lt;!&ndash;    najświeższy plik z logami ma mieć nazwę newest.log&ndash;&gt;-->
+<!--    &lt;!&ndash;    <property name="HOME_LOG_ROLLING" value="${user.dir}/my-logs/newest.log" />&ndash;&gt;-->
+<!--&lt;!&ndash;    <property name="HOME_LOG_ROLLING" value="/var/tmp/HelpDesk/my-logs/newest.log" />&ndash;&gt;-->
+<!--    <property name="HOME_LOG_ROLLING" value="F:\moje_projekty\SRB\my-logs\newest.log" />-->
+<!--    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+<!--    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${HOME_LOG_ROLLING}</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--            &lt;!&ndash;            pliki archiwalne maja być umiejscowione w katalogu my-logs/archived i mają mieć nazwę rolled{data}.{nr_porzadkowy}&ndash;&gt;-->
+<!--            <fileNamePattern>my-logs/archived/rolled.%d{yyyy-MM-dd}.%i.log</fileNamePattern>-->
+<!--            &lt;!&ndash;            pliki mają sie rolować przy rozmiarze 20MB&ndash;&gt;-->
+<!--            <maxFileSize>20MB</maxFileSize>-->
+<!--            &lt;!&ndash;            po przekroczeniu rozmiaru 5GB najstarsze mają zostać usunięte&ndash;&gt;-->
+<!--            <totalSizeCap>5GB</totalSizeCap>-->
+<!--            &lt;!&ndash;            czas przechowywania plików z logami - 30 dni&ndash;&gt;-->
+<!--            <maxHistory>30</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <encoder>-->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+<!--    <logger name="local.wpr.start.HelpDesk" level="WARN" additivity="true">-->
+<!--        <appender-ref ref="FILE-ROLLING" />-->
+<!--    </logger>-->
+<!--    <root level="WARN">-->
+<!--        <appender-ref ref="CONSOLE" />-->
+<!--    </root>-->
+<!--</configuration>-->
+
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_PATH" value="/tmp/name.log" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <appender name="FILE-AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/debug.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_PATH}/archived/debug.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/error.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_PATH}/archived/error.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-AUDIT" />
+    </logger>
+
+    <logger name="com.yourapp" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-AUDIT" />
+    </logger>
+
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-AUDIT" />
+    </logger>
+
+    <logger name="org.hibernate.SQL" level="TRACE" additivity="false">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-AUDIT" />
+    </logger>
+
+    <root level="error">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE-ERROR" />
+    </root>
+
+</configuration>

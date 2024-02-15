@@ -22,7 +22,7 @@ import javax.persistence.*;
 public class CloseType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int closeTypeId;
     private String closeTypeName;
     private String closeTypeDesc;
     private boolean active;
